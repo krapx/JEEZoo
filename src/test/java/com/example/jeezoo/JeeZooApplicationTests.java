@@ -11,9 +11,4 @@ class JeeZooApplicationTests {
   void contextLoads() {
   }
 
-  @Test
-  void test() {
-    Assertions.assertEquals(1,0);
-  }
-
 }
