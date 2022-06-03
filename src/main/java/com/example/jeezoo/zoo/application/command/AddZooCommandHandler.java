@@ -5,7 +5,7 @@ import com.example.jeezoo.zoo.domain.ZooId;
 import com.example.jeezoo.zoo.domain.ZooService;
 import com.example.jeezoo.zoo.domain.ZooStatus;
 
-public class AddZooCommandHandler implements CommandHandler<AddZooCommand, ZooId> {
+public final class AddZooCommandHandler implements CommandHandler<AddZooCommand, ZooId> {
 
     private final ZooService zooService;
 

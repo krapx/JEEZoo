@@ -8,8 +8,8 @@ import lombok.Builder;
 @Builder
 public class AnimalResponse {
 
-  public String    name;
   public Long      id;
+  public String    name;
   public String    status;
   public String    type;
   public LocalDate arrivalDate;

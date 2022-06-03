@@ -7,6 +7,7 @@ import lombok.Builder;
 @Builder
 public class ZooResponse {
 
+    public Long id;
     public String name;
     public String location;
     public Float size;

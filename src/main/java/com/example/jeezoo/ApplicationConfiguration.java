@@ -1,8 +1,9 @@
 package com.example.jeezoo;
 
 import com.example.jeezoo.animal.application.DefaultAnimalService;
-import com.example.jeezoo.animal.application.command.AddAnimalCommand;
-import com.example.jeezoo.animal.application.command.AddAnimalCommandHandler;
+import com.example.jeezoo.animal.application.command.*;
+import com.example.jeezoo.animal.application.query.RetrieveAllAnimals;
+import com.example.jeezoo.animal.application.query.RetrieveAllAnimalsQueryHandler;
 import com.example.jeezoo.animal.application.query.RetrieveAnimalById;
 import com.example.jeezoo.animal.application.query.RetrieveAnimalByIdQueryHandler;
 import com.example.jeezoo.animal.domain.AnimalService;
@@ -42,8 +43,9 @@ import com.example.jeezoo.space.infrastructure.SpaceMapper;
 import com.example.jeezoo.space.infrastructure.jpa.JpaSpaceRepository;
 import com.example.jeezoo.space.infrastructure.jpa.h2.H2SpaceRepository;
 import com.example.jeezoo.zoo.application.DefaultZooService;
-import com.example.jeezoo.zoo.application.command.AddZooCommand;
-import com.example.jeezoo.zoo.application.command.AddZooCommandHandler;
+import com.example.jeezoo.zoo.application.command.*;
+import com.example.jeezoo.zoo.application.query.RetrieveAllZoosQuery;
+import com.example.jeezoo.zoo.application.query.RetrieveAllZoosQueryHandler;
 import com.example.jeezoo.zoo.application.query.RetrieveZooById;
 import com.example.jeezoo.zoo.application.query.RetrieveZooByIdQueryHandler;
 import com.example.jeezoo.zoo.domain.ZooService;
@@ -97,7 +99,11 @@ public class ApplicationConfiguration {
     public CommandBus commandBus() {
         final Map<Class<? extends Command>, CommandHandler> commandHandlerMap = new HashMap<>();
         commandHandlerMap.put(AddAnimalCommand.class, new AddAnimalCommandHandler(animalService()));
+        commandHandlerMap.put(DeleteAnimalCommand.class, new DeleteAnimalCommandHandler(animalService()));
+        commandHandlerMap.put(UpdateAnimalCommand.class, new UpdateAnimalCommandHandler(animalService()));
         commandHandlerMap.put(AddZooCommand.class, new AddZooCommandHandler(zooService()));
+        commandHandlerMap.put(DeleteZooCommand.class, new DeleteZooCommandHandler(zooService()));
+        commandHandlerMap.put(UpdateZooCommand.class, new UpdateZooCommandHandler(zooService()));
         commandHandlerMap.put(CreateSpaceCmd.class, new CreateSpaceCmdHandler(spaceService()));
         commandHandlerMap.put(DeleteSpaceByIdCmd.class, new DeleteSpaceByIdCmdHandler(spaceService()));
         commandHandlerMap.put(UpdateSpaceCmd.class, new UpdateSpaceCmdHandler(spaceService()));
@@ -116,6 +122,8 @@ public class ApplicationConfiguration {
         final Map<Class<? extends Query>, QueryHandler> queryHandlerMap = new HashMap<>();
         queryHandlerMap.put(RetrieveAnimalById.class, new RetrieveAnimalByIdQueryHandler(animals));
         queryHandlerMap.put(RetrieveZooById.class, new RetrieveZooByIdQueryHandler(zoos));
+        queryHandlerMap.put(RetrieveAllZoosQuery.class, new RetrieveAllZoosQueryHandler(zoos));
+        queryHandlerMap.put(RetrieveAllAnimals.class, new RetrieveAllAnimalsQueryHandler(animals));
         queryHandlerMap.put(ReadSpaceByIdQuery.class, new ReadSpaceByIdQueryHandler(spaceService()));
         queryHandlerMap.put(ReadSpaceQuery.class, new ReadSpaceQueryHandler(spaceService()));
         queryHandlerMap.put(ReadFightByIdQuery.class, new ReadFightByIdQueryHandler(fightService()));

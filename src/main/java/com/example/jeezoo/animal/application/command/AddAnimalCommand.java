@@ -12,7 +12,6 @@ public final class AddAnimalCommand implements Command {
   private final String    name;
   private final String    type;
   private final String    status;
-  private final LocalDate arrivalDate;
   private final Long      spaceId;
 
 }

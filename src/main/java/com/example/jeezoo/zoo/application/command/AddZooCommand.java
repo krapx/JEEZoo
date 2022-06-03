@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class AddZooCommand implements Command {
+public final class AddZooCommand implements Command {
 
     private String name;
     private String location;

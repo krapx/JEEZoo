@@ -1,63 +1,102 @@
 package com.example.jeezoo.animal.infrastructure.primary;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 import com.example.jeezoo.animal.application.command.AddAnimalCommand;
+import com.example.jeezoo.animal.application.command.DeleteAnimalCommand;
+import com.example.jeezoo.animal.application.command.UpdateAnimalCommand;
+import com.example.jeezoo.animal.application.query.RetrieveAllAnimals;
 import com.example.jeezoo.animal.application.query.RetrieveAnimalById;
 import com.example.jeezoo.animal.domain.Animal;
 import com.example.jeezoo.animal.domain.AnimalId;
 import com.example.jeezoo.animal.infrastructure.primary.request.AddAnimalRequest;
+import com.example.jeezoo.animal.infrastructure.primary.request.UpdateAnimalRequest;
 import com.example.jeezoo.animal.infrastructure.primary.response.AnimalResponse;
 import com.example.jeezoo.kernel.cqs.CommandBus;
 import com.example.jeezoo.kernel.cqs.QueryBus;
-import javax.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @RestController
-@RequestMapping("animal")
+@RequestMapping("/api/animals")
 public class AnimalController {
 
-  private final CommandBus commandBus;
-  private final QueryBus   queryBus;
+    private final CommandBus commandBus;
+    private final QueryBus queryBus;
 
-  public AnimalController(CommandBus commandBus, QueryBus queryBus) {
-    this.commandBus = commandBus;
-    this.queryBus = queryBus;
-  }
+    public AnimalController(CommandBus commandBus, QueryBus queryBus) {
+        this.commandBus = commandBus;
+        this.queryBus = queryBus;
+    }
 
+    @PostMapping("")
+    public ResponseEntity<Void> addAnimal(@RequestBody @Valid AddAnimalRequest addAnimalRequest) {
+        var addAnimalCommand = new AddAnimalCommand(
+            addAnimalRequest.name,
+            addAnimalRequest.type,
+            addAnimalRequest.status,
+            addAnimalRequest.spaceId
+        );
 
-  @PostMapping("")
-  public ResponseEntity<Void> addAnimal(@RequestBody @Valid AddAnimalRequest addAnimalRequest) {
-    var addAnimalCommand = new AddAnimalCommand(addAnimalRequest.name, addAnimalRequest.type, addAnimalRequest.status,
-                                                addAnimalRequest.arrivalDate, addAnimalRequest.spaceId);
+        final AnimalId animalId = commandBus.send(addAnimalCommand);
 
-    final AnimalId animalId = commandBus.send(addAnimalCommand);
+        return ResponseEntity.created(linkTo(methodOn(AnimalController.class).getAnimalById(animalId.getValue())).toUri())
+            .build();
+    }
 
-    return ResponseEntity.created(linkTo(methodOn(AnimalController.class).getAnimalById(animalId.getValue())).toUri())
-                         .build();
-  }
+    @GetMapping
+    public List<AnimalResponse> getAllAnimals() {
+        List<Animal> animalsResponse =  queryBus.send(new RetrieveAllAnimals());
 
-  @GetMapping("{animalId}")
-  public ResponseEntity<?> getAnimalById(@PathVariable Long animalId) {
+        return animalsResponse.stream().map(animal -> {
+            return AnimalResponse.builder()
+                    .id(animal.getId().getValue())
+                    .name(animal.getName())
+                    .type(animal.getType().toString())
+                    .status(animal.getStatus().toString())
+                    .arrivalDate(animal.getArrivalDate())
+                    .build();
+            }).collect(Collectors.toList());
 
-    Animal animal = queryBus.send(new RetrieveAnimalById(animalId));
+    }
 
-    var animalResponse = AnimalResponse.builder()
-                                       .id(animal.getId().getValue())
-                                       .name(animal.getName())
-                                       .type(animal.getType().toString())
-                                       .status(animal.getStatus().toString())
-                                       .arrivalDate(animal.getArrivalDate())
-                                       .build();
+    @GetMapping("{animalId}")
+    public ResponseEntity<?> getAnimalById(@PathVariable Long animalId) {
 
-    return ResponseEntity.ok(animalResponse);
-  }
+        Animal animal = queryBus.send(new RetrieveAnimalById(animalId));
+
+        var animalResponse = AnimalResponse.builder()
+            .id(animal.getId().getValue())
+            .name(animal.getName())
+            .type(animal.getType().toString())
+            .status(
+                animal.getStatus().toString())
+            .arrivalDate(animal.getArrivalDate())
+            .build();
+
+        return ResponseEntity.ok(animalResponse);
+    }
+
+    @PutMapping("{animalId}")
+    public ResponseEntity<?> updateAnimalById(
+            @RequestBody @Valid UpdateAnimalRequest updateAnimalRequest, @PathVariable Long animalId) {
+        var updateAnimalById = new UpdateAnimalCommand(animalId, updateAnimalRequest.name, updateAnimalRequest.type,
+                updateAnimalRequest.status, updateAnimalRequest.spaceId);
+        commandBus.send(updateAnimalById);
+        return ResponseEntity.accepted().build();
+    }
+
+    @DeleteMapping("{animalId}")
+    public ResponseEntity<?> deleteAnimalById(@PathVariable Long animalId) {
+        var deleteAnimalById = new DeleteAnimalCommand(animalId);
+        commandBus.send(deleteAnimalById);
+        return ResponseEntity.accepted().build();
+    }
 }
