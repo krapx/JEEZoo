@@ -14,6 +14,6 @@ public final class CreateSpaceCmdHandler implements CommandHandler<CreateSpaceCm
 
     @Override
     public Long handle(CreateSpaceCmd command) {
-        return spaceService.save(Space.createSpace(command.title)).getValue();
+        return spaceService.save(Space.createSpace(command.name)).getValue();
     }
 }

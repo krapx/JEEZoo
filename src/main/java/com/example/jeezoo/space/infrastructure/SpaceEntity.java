@@ -11,15 +11,15 @@ public class SpaceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String title;
+    private String name;
 
     public SpaceEntity id(Long id) {
         this.id = id;
         return this;
     }
 
-    public SpaceEntity title(String title) {
-        this.title = title;
+    public SpaceEntity name(String name) {
+        this.name = name;
         return this;
     }
 }

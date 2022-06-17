@@ -6,9 +6,9 @@ import lombok.Data;
 public final class Space {
 
     private final SpaceId id;
-    private final String title;
+    private final String name;
 
-    public static Space createSpace(String title) {
-        return new Space(new SpaceId(), title);
+    public static Space createSpace(String name) {
+        return new Space(new SpaceId(), name);
     }
 }

@@ -4,5 +4,5 @@ import javax.validation.constraints.NotEmpty;
 
 public final class CreateSpaceRequest {
     @NotEmpty
-    public String title;
+    public String name;
 }

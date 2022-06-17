@@ -8,9 +8,9 @@ import lombok.*;
 @AllArgsConstructor(staticName = "of")
 public final class SpaceResponse {
     private Long id;
-    private String title;
+    private String name;
 
     public static SpaceResponse fromSpace(Space space) {
-        return new SpaceResponse(space.getId().getValue(), space.getTitle());
+        return new SpaceResponse(space.getId().getValue(), space.getName());
     }
 }

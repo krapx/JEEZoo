@@ -17,7 +17,7 @@ public final class UpdateSpaceCmdHandler implements CommandHandler<UpdateSpaceCm
     public Void handle(UpdateSpaceCmd command) {
         spaceService.save(Space.of(
             new SpaceId(command.id),
-            command.title
+            command.name
         ));
         return null;
     }

@@ -7,5 +7,5 @@ import lombok.NonNull;
 @Data
 public final class CreateSpaceCmd implements Command {
     @NonNull
-    public String title;
+    public String name;
 }

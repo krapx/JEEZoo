@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 public final class SpaceMapper {
 
     public SpaceEntity toEntity(Space space) {
-        return new SpaceEntity().id(space.getId().getValue()).title(space.getTitle());
+        return new SpaceEntity().id(space.getId().getValue()).name(space.getName());
     }
 
     public Space toModel(SpaceEntity spaceEntity) {
-        return Space.of(new SpaceId(spaceEntity.getId()), spaceEntity.getTitle());
+        return Space.of(new SpaceId(spaceEntity.getId()), spaceEntity.getName());
     }
 }

@@ -82,7 +82,7 @@ public class ZooController {
 
             // 2 CREATE SPACES
             SpaceId spaceId = spaceService.save(Space.createSpace(
-                space.title
+                space.name
                 //,zoo.getId();
             ));
 

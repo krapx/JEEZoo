@@ -5,5 +5,5 @@ import javax.validation.constraints.NotNull;
 public final class UpdateSpaceRequest {
     @NotNull
     public Long id;
-    public String title;
+    public String name;
 }
