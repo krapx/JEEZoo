@@ -11,8 +11,8 @@ public class DefaultZooService implements ZooService {
     }
 
     @Override
-    public ZooId addZoo(String name, String location, Float size, String spaceCapacity, String peopleCapacity, ZooStatus zooStatus) {
-        Zoo zoo = Zoo.createZoo(name,location,size,spaceCapacity,peopleCapacity,zooStatus);
+    public ZooId addZoo(String name, ZooStatus zooStatus) {
+        Zoo zoo = Zoo.createZoo(name, zooStatus);
         return zoos.save(zoo);
     }
 
@@ -24,9 +24,8 @@ public class DefaultZooService implements ZooService {
     }
 
     @Override
-    public Void update(Long id, String name, String location, Float size, String spaceCapacity, String peopleCapacity,
-                       String zooStatus) {
-        Zoo zoo = Zoo.of(ZooId.of(id),name,location,size,spaceCapacity,peopleCapacity,ZooStatus.valueOf(zooStatus));
+    public Void update(Long id, String name, String zooStatus) {
+        Zoo zoo = Zoo.of(ZooId.of(id), name, ZooStatus.valueOf(zooStatus));
         zoos.save(zoo);
         return null;
     }

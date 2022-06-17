@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ZooMapper implements Adapter<ZooEntity, Zoo> {
+
     @Override
     public Zoo adapt(ZooEntity source) {
-        return Zoo.of(ZooId.of(source.getZooId()), source.getName(), source.getLocation(), source.getSize(),
-                source.getSpaceCapacity(), source.getPeopleCapacity(), ZooStatus.valueOf(source.getZooStatus()));
+        return Zoo.of(ZooId.of(source.getZooId()), source.getName(), ZooStatus.valueOf(source.getZooStatus()));
     }
 }

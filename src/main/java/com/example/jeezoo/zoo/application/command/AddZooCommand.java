@@ -9,9 +9,5 @@ import lombok.Getter;
 public final class AddZooCommand implements Command {
 
     private String name;
-    private String location;
-    private Float size;
-    private String spaceCapacity;
-    private String peopleCapacity;
     private String zooStatus;
 }

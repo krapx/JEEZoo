@@ -4,5 +4,5 @@ import com.example.jeezoo.kernel.annotations.ValueObject;
 
 @ValueObject
 public enum ZooStatus {
-    Open,Close
+    IN_PROGRESS, FINISH
 }

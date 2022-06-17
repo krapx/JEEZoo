@@ -8,9 +8,5 @@ public final class UpdateZooCommand implements Command {
 
     private final Long id;
     private final String name;
-    private final String location;
-    private final Float size;
-    private final String spaceCapacity;
-    private final String peopleCapacity;
     private final String zooStatus;
 }

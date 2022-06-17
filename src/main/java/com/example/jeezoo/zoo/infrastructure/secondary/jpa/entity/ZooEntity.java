@@ -16,11 +16,7 @@ public class ZooEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long zooId;
     private String name;
-    private String location;
-    private Float size;
-    private String spaceCapacity;
-    private String peopleCapacity;
-    private String zooStatus;
+    private String zooStatus; // IN_PROGRESS FINISH
 
     public ZooEntity() {
 

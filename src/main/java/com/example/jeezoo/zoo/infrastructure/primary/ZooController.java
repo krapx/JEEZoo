@@ -37,13 +37,15 @@ public class ZooController {
 
     @PostMapping("")
     public ResponseEntity<Void> addZoo(@RequestBody @Valid AddZooRequest addZooRequest) {
-        var addZooCommand = new AddZooCommand(addZooRequest.name, addZooRequest.location, addZooRequest.size,
-                addZooRequest.spaceCapacity, addZooRequest.peopleCapacity, addZooRequest.zooStatus);
+        var addZooCommand = new AddZooCommand(
+            addZooRequest.name,
+            addZooRequest.zooStatus
+        );
 
         final ZooId zooId = commandBus.send(addZooCommand);
 
         return ResponseEntity.created(linkTo(methodOn(ZooController.class).getZooById(zooId.getValue())).toUri())
-                .build();
+            .build();
     }
 
     @GetMapping
@@ -52,14 +54,10 @@ public class ZooController {
 
         return zoos.stream().map(zoo -> {
             return ZooResponse.builder()
-                    .id(zoo.getId().getValue())
-                    .name(zoo.getName())
-                    .location(zoo.getLocation())
-                    .size(zoo.getSize())
-                    .spaceCapacity(zoo.getSpaceCapacity())
-                    .peopleCapacity(zoo.getPeopleCapacity())
-                    .zooStatus(zoo.getZooStatus().name())
-                    .build();
+                .id(zoo.getId().getValue())
+                .name(zoo.getName())
+                .zooStatus(zoo.getZooStatus().name())
+                .build();
         }).collect(Collectors.toList());
     }
 
@@ -69,23 +67,22 @@ public class ZooController {
         Zoo zoo = queryBus.send(new RetrieveZooById(zooId));
 
         var zooResponse = ZooResponse.builder()
-                .name(zoo.getName())
-                .location(zoo.getLocation())
-                .size(zoo.getSize())
-                .spaceCapacity(zoo.getSpaceCapacity())
-                .peopleCapacity(zoo.getPeopleCapacity())
-                .zooStatus(zoo.getZooStatus().name())
-                .build();
+            .name(zoo.getName())
+            .zooStatus(zoo.getZooStatus().name())
+            .build();
 
         return ResponseEntity.ok(zooResponse);
     }
 
     @PutMapping("{zooId}")
     public ResponseEntity<?> updateZooById(
-            @RequestBody @Valid UpdateZooRequest updateZooRequest, @PathVariable Long zooId) {
-        var updateZooById = new UpdateZooCommand(zooId, updateZooRequest.name, updateZooRequest.location,
-                updateZooRequest.size, updateZooRequest.spaceCapacity, updateZooRequest.peopleCapacity,
-                updateZooRequest.zooStatus);
+        @RequestBody @Valid UpdateZooRequest updateZooRequest, @PathVariable Long zooId
+    ) {
+        var updateZooById = new UpdateZooCommand(
+            zooId,
+            updateZooRequest.name,
+            updateZooRequest.zooStatus
+        );
         commandBus.send(updateZooById);
         return ResponseEntity.ok().build();
     }

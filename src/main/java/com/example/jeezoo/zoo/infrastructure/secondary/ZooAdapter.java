@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public final class ZooAdapter implements Adapter<Zoo, ZooEntity> {
+
     @Override
     public ZooEntity adapt(Zoo source) {
-        return new ZooEntity(source.getId().getValue(), source.getName(), source.getLocation(), source.getSize(),
-                            source.getSpaceCapacity(), source.getPeopleCapacity(), source.getZooStatus().name());
+        return new ZooEntity(source.getId().getValue(), source.getName(), source.getZooStatus().name());
     }
 }

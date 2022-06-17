@@ -9,9 +9,5 @@ public class ZooResponse {
 
     public Long id;
     public String name;
-    public String location;
-    public Float size;
-    public String spaceCapacity;
-    public String peopleCapacity;
     public String zooStatus;
 }

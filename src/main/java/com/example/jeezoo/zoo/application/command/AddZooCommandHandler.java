@@ -15,7 +15,6 @@ public final class AddZooCommandHandler implements CommandHandler<AddZooCommand,
 
     @Override
     public ZooId handle(AddZooCommand command) {
-        return zooService.addZoo(command.getName(), command.getLocation(), command.getSize(), command.getSpaceCapacity(),
-                command.getPeopleCapacity(), ZooStatus.valueOf(command.getZooStatus()));
+        return zooService.addZoo(command.getName(), ZooStatus.valueOf(command.getZooStatus()));
     }
 }

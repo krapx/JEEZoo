@@ -13,8 +13,7 @@ public final class UpdateZooCommandHandler implements CommandHandler<UpdateZooCo
 
     @Override
     public Void handle(UpdateZooCommand command) {
-        zooService.update(command.getId(), command.getName(), command.getLocation(), command.getSize(),
-                command.getSpaceCapacity(), command.getPeopleCapacity(), command.getZooStatus());
+        zooService.update(command.getId(), command.getName(), command.getZooStatus());
         return null;
     }
 }
