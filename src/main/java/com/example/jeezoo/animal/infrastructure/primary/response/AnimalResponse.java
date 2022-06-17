@@ -12,6 +12,7 @@ public class AnimalResponse {
   public String    name;
   public String    status;
   public String    type;
+  public float     lengthMax;
+  public float     weightMax;
   public LocalDate arrivalDate;
-  public Long spaceId;
 }

@@ -15,6 +15,8 @@ public final class AnimalAdapter implements Adapter<Animal, AnimalEntity> {
             source.getName(),
             source.getType(),
             source.getStatus().name(),
+            source.getLengthMax(),
+            source.getWeightMax(),
             source.getArrivalDate(),
             source.getSpaceId()
         );

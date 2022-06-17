@@ -12,6 +12,8 @@ public final class AddAnimalCommand implements Command {
   private final String    name;
   private final String    type;
   private final String    status;
+  private final float     lengthMax;
+  private final float     weightMax;
   private final Long      spaceId;
 
 }

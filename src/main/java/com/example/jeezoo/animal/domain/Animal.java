@@ -19,17 +19,20 @@ public final class Animal {
     private final String name;
     private final String type;
     private final AnimalStatus status;
+    private final float lengthMax;
+    private final float weightMax;
     private final LocalDate arrivalDate;
     private final Long spaceId;
 
-    public static Animal of(AnimalId id, String name, String type, String status, LocalDate arrivalDate, Long spaceId) {
-        return new Animal(id, name, type, AnimalStatus.valueOf(status), arrivalDate, spaceId);
+    public static Animal of(AnimalId id, String name, String type, String status, float lengthMax, float weightMax,
+                            LocalDate arrivalDate, Long spaceId) {
+        return new Animal(id, name, type, AnimalStatus.valueOf(status), lengthMax, weightMax, arrivalDate, spaceId);
     }
 
     public static Animal createAnimal(
-        String name, String type, String status, LocalDate arrivalDate,
-        Long spaceId
+        String name, String type, String status, float lengthMax, float weightMax,
+        LocalDate arrivalDate, Long spaceId
     ) {
-        return of(AnimalId.of(-1L), name, type, status, arrivalDate, spaceId);
+        return of(AnimalId.of(-1L), name, type, status, lengthMax, weightMax, arrivalDate, spaceId);
     }
 }

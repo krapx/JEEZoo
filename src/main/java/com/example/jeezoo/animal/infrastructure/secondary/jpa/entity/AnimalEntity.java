@@ -21,6 +21,8 @@ public final class AnimalEntity {
   private String    name;
   private String    type;
   private String    status;
+  private float     lengthMax;
+  private float     weightMax;
   private LocalDate arrivalDate;
   private Long      spaceId;
 

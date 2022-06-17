@@ -32,7 +32,7 @@ class AnimalControllerTest {
         AnimalFixtures.addAnimal(
             "animal_1",
             AnimalType.Lion.name(),
-            AnimalStatus.InCage.name(),
+            AnimalStatus.Alive.name(),
             LocalDate.now(),
             1L
         );

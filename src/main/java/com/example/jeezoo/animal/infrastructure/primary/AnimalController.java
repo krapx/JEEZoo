@@ -47,6 +47,8 @@ public class AnimalController {
             addAnimalRequest.name,
             addAnimalRequest.type,
             addAnimalRequest.status,
+            addAnimalRequest.lengthMax,
+            addAnimalRequest.weightMax,
             addAnimalRequest.spaceId
         );
 
@@ -68,7 +70,8 @@ public class AnimalController {
                 .type(animal.getType().toString())
                 .status(animal.getStatus().toString())
                 .arrivalDate(animal.getArrivalDate())
-                .spaceId(animal.getSpaceId())
+                .lengthMax(animal.getLengthMax())
+                .weightMax(animal.getWeightMax())
                 .build();
         }).collect(Collectors.toList());
 
@@ -85,7 +88,8 @@ public class AnimalController {
                 .type(animal.getType().toString())
                 .status(animal.getStatus().toString())
                 .arrivalDate(animal.getArrivalDate())
-                .spaceId(animal.getSpaceId())
+                .lengthMax(animal.getLengthMax())
+                .weightMax(animal.getWeightMax())
                 .build();
         }).collect(Collectors.toList());
 
@@ -113,7 +117,8 @@ public class AnimalController {
         @RequestBody @Valid UpdateAnimalRequest updateAnimalRequest, @PathVariable Long animalId
     ) {
         var updateAnimalById = new UpdateAnimalCommand(animalId, updateAnimalRequest.name, updateAnimalRequest.type,
-                                                       updateAnimalRequest.status, updateAnimalRequest.spaceId
+                                                       updateAnimalRequest.status, updateAnimalRequest.lengthMax,
+                                                        updateAnimalRequest.weightMax, updateAnimalRequest.spaceId
         );
         commandBus.send(updateAnimalById);
         return ResponseEntity.accepted().build();

@@ -12,6 +12,6 @@ public final class AnimalMapper implements Adapter<AnimalEntity, Animal> {
   @Override
   public Animal adapt(AnimalEntity source) {
     return Animal.of(new AnimalId(source.getId()), source.getName(), source.getType(), source.getStatus(),
-                     source.getArrivalDate(), source.getSpaceId());
+                     source.getLengthMax(), source.getWeightMax(), source.getArrivalDate(), source.getSpaceId());
   }
 }

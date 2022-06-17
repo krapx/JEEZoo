@@ -15,6 +15,7 @@ public final class AddAnimalCommandHandler implements CommandHandler<AddAnimalCo
   @Override
   public AnimalId handle(AddAnimalCommand command) {
 
-    return animalService.addAnimal(command.getName(), command.getType(), command.getStatus(), command.getSpaceId());
+    return animalService.addAnimal(command.getName(), command.getType(), command.getStatus(),
+            command.getLengthMax(), command.getWeightMax(), command.getSpaceId());
   }
 }

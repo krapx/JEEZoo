@@ -1,6 +1,7 @@
 package com.example.jeezoo.zoo.infrastructure.primary;
 
 import com.example.jeezoo.animal.application.DefaultAnimalService;
+import com.example.jeezoo.animal.domain.AnimalService;
 import com.example.jeezoo.animal.domain.AnimalStatus;
 import com.example.jeezoo.animal.infrastructure.primary.request.ExternalAnimalRequest;
 import com.example.jeezoo.kernel.cqs.CommandBus;
@@ -46,11 +47,11 @@ public class ZooController {
     private final SpaceService spaceService;
     private final ZooService zooService;
 
-    private final DefaultAnimalService animalService;
+    private final AnimalService animalService;
 
     public ZooController(
         CommandBus commandBus, QueryBus queryBus, SpaceService spaceService, ZooService zooService,
-        DefaultAnimalService animalService
+        AnimalService animalService
     ) {
         this.commandBus = commandBus;
         this.queryBus = queryBus;
@@ -95,7 +96,9 @@ public class ZooController {
                         animalService.addAnimal(
                             externalAnimalRequest.name,
                             externalAnimalRequest.animal_type,
-                            AnimalStatus.InCage.name(),
+                            AnimalStatus.Alive.name(),
+                            externalAnimalRequest.length_max,
+                            externalAnimalRequest.weight_max,
                             spaceId.getValue()
                         );
                     });
