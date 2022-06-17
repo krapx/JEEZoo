@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import com.example.jeezoo.space.domain.SpaceId;
 import org.springframework.stereotype.Repository;
 
 @Repository()
@@ -49,5 +51,11 @@ public class H2Animals implements Animals {
   public List<Animal> findAll() {
     logger.info("FIND ALL");
     return jpaAnimals.findAll().stream().map(animalMapper::adapt).collect(Collectors.toList());
+  }
+
+  @Override
+  public List<Animal> findBySpaceId(SpaceId spaceId) {
+    logger.info("FIND ALL BY SPACE ID");
+    return jpaAnimals.findBySpaceId(spaceId.getValue()).stream().map(animalMapper::adapt).collect(Collectors.toList());
   }
 }

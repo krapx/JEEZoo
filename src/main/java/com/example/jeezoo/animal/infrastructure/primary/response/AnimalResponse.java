@@ -13,5 +13,5 @@ public class AnimalResponse {
   public String    status;
   public String    type;
   public LocalDate arrivalDate;
-
+  public Long spaceId;
 }
