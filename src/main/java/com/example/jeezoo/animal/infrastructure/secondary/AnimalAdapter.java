@@ -8,9 +8,15 @@ import org.springframework.stereotype.Component;
 @Component
 public final class AnimalAdapter implements Adapter<Animal, AnimalEntity> {
 
-  @Override
-  public AnimalEntity adapt(Animal source) {
-    return new AnimalEntity(source.getId().getValue(), source.getName(), source.getType().name(),
-                            source.getStatus().name(), source.getArrivalDate(), source.getSpaceId());
-  }
+    @Override
+    public AnimalEntity adapt(Animal source) {
+        return new AnimalEntity(
+            source.getId().getValue(),
+            source.getName(),
+            source.getType(),
+            source.getStatus().name(),
+            source.getArrivalDate(),
+            source.getSpaceId()
+        );
+    }
 }

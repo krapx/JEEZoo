@@ -20,8 +20,8 @@ public final class DefaultAnimalService implements AnimalService {
   @Override
   public AnimalId addAnimal(String name, String type, String status, Long spaceId) {
     final AnimalId animalId = AnimalId.noId();
-    final Animal animal = Animal.of(animalId, name, type, status, LocalDate.now(), spaceId);
-    //final Animal animal = Animal.createAnimal(name, type, status, arrivalDate, spaceId);
+//    final Animal animal = Animal.of(animalId, name, type, status, LocalDate.now(), spaceId);
+    final Animal animal = Animal.createAnimal(name, type, status, LocalDate.now(), spaceId);
     return animals.save(animal);
   }
 
