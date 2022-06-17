@@ -77,15 +77,12 @@ public class ZooController {
     public ResponseEntity<GenerateZooGameRequest> generateZooGame(@RequestBody @Valid GenerateZooGameRequest generateZooGame) {
 
         // 1 CREATE ZOO
-        ZooId zoo = zooService.addZoo("zoo_1", ZooStatus.IN_PROGRESS);
+        ZooId zooId = zooService.addZoo("zoo_1", ZooStatus.IN_PROGRESS);
 
         generateZooGame.spaces.forEach(space -> {
 
             // 2 CREATE SPACES
-            SpaceId spaceId = spaceService.save(Space.createSpace(
-                space.name
-                //,zoo.getId();
-            ));
+            SpaceId spaceId = spaceService.save(Space.createSpace(space.name, zooId));
 
             // 3 CREATE ANIMALS
             String url = "https://zoo-animal-api.herokuapp.com/animals/rand/" + space.animalsNumber;

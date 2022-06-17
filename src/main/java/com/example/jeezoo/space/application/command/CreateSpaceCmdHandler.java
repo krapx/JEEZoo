@@ -3,6 +3,7 @@ package com.example.jeezoo.space.application.command;
 import com.example.jeezoo.kernel.cqs.CommandHandler;
 import com.example.jeezoo.space.domain.Space;
 import com.example.jeezoo.space.domain.SpaceService;
+import com.example.jeezoo.zoo.domain.ZooId;
 
 public final class CreateSpaceCmdHandler implements CommandHandler<CreateSpaceCmd, Long> {
 
@@ -14,6 +15,6 @@ public final class CreateSpaceCmdHandler implements CommandHandler<CreateSpaceCm
 
     @Override
     public Long handle(CreateSpaceCmd command) {
-        return spaceService.save(Space.createSpace(command.name)).getValue();
+        return spaceService.save(Space.createSpace(command.name, ZooId.of(command.zooId))).getValue();
     }
 }

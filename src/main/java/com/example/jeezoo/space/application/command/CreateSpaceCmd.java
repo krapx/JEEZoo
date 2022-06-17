@@ -8,4 +8,5 @@ import lombok.NonNull;
 public final class CreateSpaceCmd implements Command {
     @NonNull
     public String name;
+    public Long zooId;
 }

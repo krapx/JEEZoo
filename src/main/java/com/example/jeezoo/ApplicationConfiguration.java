@@ -146,7 +146,7 @@ public class ApplicationConfiguration {
 
     @Bean
     public SpaceService spaceService() {
-        return new SpringSpaceService(H2SpaceRepository());
+        return new SpringSpaceService(H2SpaceRepository(), zooService());
     }
 
     @Bean

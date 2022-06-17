@@ -4,6 +4,7 @@ import com.example.jeezoo.kernel.cqs.CommandHandler;
 import com.example.jeezoo.space.domain.Space;
 import com.example.jeezoo.space.domain.SpaceId;
 import com.example.jeezoo.space.domain.SpaceService;
+import com.example.jeezoo.zoo.domain.ZooId;
 
 public final class UpdateSpaceCmdHandler implements CommandHandler<UpdateSpaceCmd, Void> {
 
@@ -17,7 +18,8 @@ public final class UpdateSpaceCmdHandler implements CommandHandler<UpdateSpaceCm
     public Void handle(UpdateSpaceCmd command) {
         spaceService.save(Space.of(
             new SpaceId(command.id),
-            command.name
+            command.name,
+            ZooId.of(command.zooId)
         ));
         return null;
     }

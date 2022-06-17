@@ -12,6 +12,7 @@ public class SpaceEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+    private Long zooId;
 
     public SpaceEntity id(Long id) {
         this.id = id;
@@ -20,6 +21,11 @@ public class SpaceEntity {
 
     public SpaceEntity name(String name) {
         this.name = name;
+        return this;
+    }
+
+    public SpaceEntity zooId(Long zooId) {
+        this.zooId = zooId;
         return this;
     }
 }
