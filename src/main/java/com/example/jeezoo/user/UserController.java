@@ -1,4 +1,4 @@
-package com.example.jeezoo.user.infrastructure.primary;
+package com.example.jeezoo.user;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
