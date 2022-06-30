@@ -7,10 +7,12 @@ import lombok.*;
 @ToString
 @AllArgsConstructor(staticName = "of")
 public final class SpaceResponse {
+
     private Long id;
     private String name;
+    private Long zooId;
 
     public static SpaceResponse fromSpace(Space space) {
-        return new SpaceResponse(space.getId().getValue(), space.getName());
+        return new SpaceResponse(space.getId().getValue(), space.getName(), space.getZooId().getValue());
     }
 }

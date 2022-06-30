@@ -1,14 +1,18 @@
 package com.example.jeezoo.space.domain;
 
 import com.example.jeezoo.space.domain.exception.SpaceNotFoundException;
+import com.example.jeezoo.zoo.domain.ZooService;
 
 import java.util.List;
 
 public class SpaceService {
     private final SpaceRepository spaceRepository;
 
-    public SpaceService(SpaceRepository spaceRepository) {
+    private final ZooService zooService;
+
+    public SpaceService(SpaceRepository spaceRepository, ZooService zooService) {
         this.spaceRepository = spaceRepository;
+        this.zooService = zooService;
     }
 
     public List<Space> getAll() {
@@ -20,6 +24,7 @@ public class SpaceService {
     }
 
     public SpaceId save(Space space) {
+        zooService.getZooById(space.getZooId());
         return spaceRepository.save(space);
     }
 

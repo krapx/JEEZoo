@@ -1,6 +1,7 @@
 package com.example.jeezoo.zoo.application;
 
 import com.example.jeezoo.zoo.domain.*;
+import com.example.jeezoo.zoo.domain.exception.ZooNotFoundException;
 
 public class DefaultZooService implements ZooService {
 
@@ -8,6 +9,11 @@ public class DefaultZooService implements ZooService {
 
     public DefaultZooService(Zoos zoos) {
         this.zoos = zoos;
+    }
+
+    @Override
+    public Zoo getZooById(ZooId zooId) {
+        return zoos.findById(zooId).orElseThrow(() -> new ZooNotFoundException(zooId));
     }
 
     @Override
