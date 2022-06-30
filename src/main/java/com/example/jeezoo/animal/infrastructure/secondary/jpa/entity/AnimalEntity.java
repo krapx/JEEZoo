@@ -24,6 +24,7 @@ public final class AnimalEntity {
   private float     lengthMax;
   private float     weightMax;
   private LocalDate arrivalDate;
+  private String    imageLink;
   private Long      spaceId;
 
 

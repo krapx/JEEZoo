@@ -14,5 +14,6 @@ public class AnimalResponse {
   public String    type;
   public float     lengthMax;
   public float     weightMax;
+  public String    imageLink;
   public LocalDate arrivalDate;
 }

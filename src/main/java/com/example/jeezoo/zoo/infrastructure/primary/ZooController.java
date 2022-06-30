@@ -99,6 +99,7 @@ public class ZooController {
                             AnimalStatus.Alive.name(),
                             externalAnimalRequest.length_max,
                             externalAnimalRequest.weight_max,
+                            externalAnimalRequest.image_link,
                             spaceId.getValue()
                         );
                     });

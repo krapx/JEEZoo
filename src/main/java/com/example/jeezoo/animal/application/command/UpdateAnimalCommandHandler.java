@@ -14,7 +14,7 @@ public final class UpdateAnimalCommandHandler implements CommandHandler<UpdateAn
     @Override
     public Void handle(UpdateAnimalCommand command) {
         animalService.update(command.getId(),command.getName(),command.getType(), command.getStatus(),
-                command.getLengthMax(), command.getWeightMax(), command.getSpaceId());
+                command.getLengthMax(), command.getWeightMax(), command.getImageLink(), command.getSpaceId());
         return null;
     }
 }

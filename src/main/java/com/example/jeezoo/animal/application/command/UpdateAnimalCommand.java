@@ -12,6 +12,7 @@ public final class UpdateAnimalCommand implements Command {
     private final String    status;
     private final float     lengthMax;
     private final float     weightMax;
+    private final String    imageLink;
     private final Long      spaceId;
 
 }

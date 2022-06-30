@@ -6,4 +6,5 @@ public final class ExternalAnimalRequest {
     public String animal_type;
     public float length_max;
     public float weight_max;
+    public String image_link;
 }

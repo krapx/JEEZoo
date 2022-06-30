@@ -7,8 +7,10 @@ import com.example.jeezoo.animal.application.query.RetrieveAllAnimals;
 import com.example.jeezoo.animal.application.query.RetrieveAnimalById;
 import com.example.jeezoo.animal.domain.Animal;
 import com.example.jeezoo.animal.domain.AnimalId;
+import com.example.jeezoo.animal.domain.AnimalService;
 import com.example.jeezoo.animal.domain.Animals;
 import com.example.jeezoo.animal.infrastructure.primary.request.AddAnimalRequest;
+import com.example.jeezoo.animal.infrastructure.primary.request.ExternalAnimalRequest;
 import com.example.jeezoo.animal.infrastructure.primary.request.UpdateAnimalRequest;
 import com.example.jeezoo.animal.infrastructure.primary.response.AnimalResponse;
 import com.example.jeezoo.kernel.cqs.CommandBus;
@@ -32,13 +34,14 @@ public class AnimalController {
 
     private final CommandBus commandBus;
     private final QueryBus queryBus;
-
     private final Animals animals;
+    private final AnimalService animalService;
 
-    public AnimalController(CommandBus commandBus, QueryBus queryBus, Animals animals) {
+    public AnimalController(CommandBus commandBus, QueryBus queryBus, Animals animals, AnimalService animalService) {
         this.commandBus = commandBus;
         this.queryBus = queryBus;
         this.animals = animals;
+        this.animalService = animalService;
     }
 
     @PostMapping("")
@@ -49,6 +52,7 @@ public class AnimalController {
             addAnimalRequest.status,
             addAnimalRequest.lengthMax,
             addAnimalRequest.weightMax,
+            addAnimalRequest.imageLink,
             addAnimalRequest.spaceId
         );
 
@@ -72,6 +76,7 @@ public class AnimalController {
                 .arrivalDate(animal.getArrivalDate())
                 .lengthMax(animal.getLengthMax())
                 .weightMax(animal.getWeightMax())
+                .imageLink(animal.getImageLink())
                 .build();
         }).collect(Collectors.toList());
 
@@ -90,6 +95,7 @@ public class AnimalController {
                 .arrivalDate(animal.getArrivalDate())
                 .lengthMax(animal.getLengthMax())
                 .weightMax(animal.getWeightMax())
+                .imageLink(animal.getImageLink())
                 .build();
         }).collect(Collectors.toList());
 
@@ -107,9 +113,16 @@ public class AnimalController {
             .status(
                 animal.getStatus().toString())
             .arrivalDate(animal.getArrivalDate())
+                .imageLink(animal.getImageLink())
             .build();
 
         return ResponseEntity.ok(animalResponse);
+    }
+
+    @GetMapping("starters")
+    public ResponseEntity<?> getStarters(){
+        ExternalAnimalRequest[] externalAnimalRequest = animalService.getStarters();
+        return ResponseEntity.ok(externalAnimalRequest);
     }
 
     @PutMapping("{animalId}")
@@ -118,7 +131,8 @@ public class AnimalController {
     ) {
         var updateAnimalById = new UpdateAnimalCommand(animalId, updateAnimalRequest.name, updateAnimalRequest.type,
                                                        updateAnimalRequest.status, updateAnimalRequest.lengthMax,
-                                                        updateAnimalRequest.weightMax, updateAnimalRequest.spaceId
+                                                        updateAnimalRequest.weightMax, updateAnimalRequest.imageLink,
+                                                        updateAnimalRequest.spaceId
         );
         commandBus.send(updateAnimalById);
         return ResponseEntity.accepted().build();

@@ -7,5 +7,6 @@ public class AddAnimalRequest {
   public String    status;
   public float     lengthMax;
   public float     weightMax;
+  public String    imageLink;
   public Long      spaceId;
 }
