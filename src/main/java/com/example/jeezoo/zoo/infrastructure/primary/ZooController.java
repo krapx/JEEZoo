@@ -46,7 +46,6 @@ public class ZooController {
 
     private final SpaceService spaceService;
     private final ZooService zooService;
-
     private final AnimalService animalService;
 
     public ZooController(

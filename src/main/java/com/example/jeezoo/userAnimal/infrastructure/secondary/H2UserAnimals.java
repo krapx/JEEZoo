@@ -1,10 +1,10 @@
 package com.example.jeezoo.userAnimal.infrastructure.secondary;
 
-import com.example.jeezoo.kernel.annotations.Repository;
 import com.example.jeezoo.user.domain.model.UserId;
 import com.example.jeezoo.userAnimal.domain.UserAnimal;
 import com.example.jeezoo.userAnimal.domain.UserAnimalId;
 import com.example.jeezoo.userAnimal.domain.UserAnimals;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 import java.util.logging.Logger;

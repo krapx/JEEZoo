@@ -3,9 +3,11 @@ package com.example.jeezoo.userAnimal.domain;
 import com.example.jeezoo.user.domain.model.UserId;
 import com.example.jeezoo.userAnimal.domain.exception.UserAnimalBadArgumentException;
 import com.example.jeezoo.userAnimal.domain.exception.UserAnimalNotFoundException;
+import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
+@Component
 public class UserAnimalService {
 
     private final UserAnimals userAnimals;

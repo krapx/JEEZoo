@@ -1,22 +1,31 @@
 package com.example.jeezoo.user.domain.model;
 
 
-public interface User {
+import lombok.Getter;
 
-  String getLastname();
+@Getter
+public class User {
 
-  String getFirstname();
+  private final String   username;
+  private final String   password;
+  private final UserRole userRole;
+  private final String   mail;
+  private       UserId   userId;
 
-  String getLogin();
+  private User(String username, String password, UserRole userRole, String mail, UserId userId) {
+    this.username = username;
+    this.password = password;
+    this.userRole = userRole;
+    this.mail = mail;
+    this.userId = userId;
+  }
 
-  UserId getUserId();
+  public static User of(String username, String password, UserRole userRole,
+                        String mail, UserId userId) {
+    return new User(username, password, userRole, mail, userId);
+  }
 
-  Address getAddress();
-
-  UserRole getUserRole();
-
-  String getMail();
-
-  void changeAddress(Address address);
-
+  public void addUserId(UserId userId) {
+    this.userId = userId;
+  }
 }
