@@ -1,31 +1,28 @@
 package com.example.jeezoo.user.domain.model;
 
+import lombok.Data;
 
-import lombok.Getter;
-
-@Getter
+@Data(staticConstructor = "of")
 public class User {
 
-  private final String   username;
-  private final String   password;
-  private final UserRole userRole;
-  private final String   mail;
-  private       UserId   userId;
+    private final UserId id;
+    private final String username;
+    private final String password;
+    private final String mail;
+    private final UserRole userRole;
 
-  private User(String username, String password, UserRole userRole, String mail, UserId userId) {
-    this.username = username;
-    this.password = password;
-    this.userRole = userRole;
-    this.mail = mail;
-    this.userId = userId;
-  }
-
-  public static User of(String username, String password, UserRole userRole,
-                        String mail, UserId userId) {
-    return new User(username, password, userRole, mail, userId);
-  }
-
-  public void addUserId(UserId userId) {
-    this.userId = userId;
-  }
+    public static User create(
+        String username,
+        String password,
+        String mail,
+        UserRole userRole
+    ) {
+        return new User(
+            UserId.notCreatedYet(),
+            username,
+            password,
+            mail,
+            userRole
+        );
+    }
 }
