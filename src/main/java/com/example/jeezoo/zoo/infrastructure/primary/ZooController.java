@@ -10,6 +10,7 @@ import com.example.jeezoo.kernel.exceptions.BadRequestException;
 import com.example.jeezoo.space.domain.Space;
 import com.example.jeezoo.space.domain.SpaceId;
 import com.example.jeezoo.space.domain.SpaceService;
+import com.example.jeezoo.space.domain.SpaceStatus;
 import com.example.jeezoo.zoo.application.command.AddZooCommand;
 import com.example.jeezoo.zoo.application.command.DeleteZooCommand;
 import com.example.jeezoo.zoo.application.command.UpdateZooCommand;
@@ -81,7 +82,11 @@ public class ZooController {
         generateZooGame.spaces.forEach(space -> {
 
             // 2 CREATE SPACES
-            SpaceId spaceId = spaceService.save(Space.createSpace(space.name, zooId));
+            SpaceId spaceId = spaceService.save(Space.createSpace(
+                space.name,
+                SpaceStatus.LOCKED.name(),
+                zooId)
+            );
 
             // 3 CREATE ANIMALS
             String url = "https://zoo-animal-api.herokuapp.com/animals/rand/" + space.animalsNumber;

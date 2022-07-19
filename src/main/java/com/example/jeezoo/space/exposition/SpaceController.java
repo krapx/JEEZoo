@@ -33,14 +33,14 @@ public class SpaceController {
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody CreateSpaceRequest request) {
-        Long id = commandBus.send(new CreateSpaceCmd(request.name));
+        Long id = commandBus.send(CreateSpaceCmd.of(request.name, request.status));
         return ResponseEntity.created(URI.create(id.toString())).build();
     }
 
     @GetMapping
     public List<SpaceResponse> readAll() {
         List<Space> spaces = queryBus.send(new ReadSpaceQuery());
-        return spaces.stream().map(SpaceResponse::fromSpace).collect(Collectors.toUnmodifiableList());
+        return spaces.stream().map(SpaceResponse::fromSpace).toList();
     }
 
     @GetMapping("{id}")

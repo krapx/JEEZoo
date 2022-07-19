@@ -4,9 +4,13 @@ import com.example.jeezoo.kernel.cqs.Command;
 import lombok.Data;
 import lombok.NonNull;
 
-@Data
+import javax.validation.constraints.NotEmpty;
+
+@Data(staticConstructor = "of")
 public final class CreateSpaceCmd implements Command {
-    @NonNull
-    public String name;
+    @NotEmpty
+    public final String name;
+    @NotEmpty
+    public final String status;
     public Long zooId;
 }

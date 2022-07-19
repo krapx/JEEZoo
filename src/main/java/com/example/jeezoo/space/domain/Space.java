@@ -8,10 +8,10 @@ public final class Space {
 
     private final SpaceId id;
     private final String name;
-
+    private final SpaceStatus status;
     private final ZooId zooId;
 
-    public static Space createSpace(String name, ZooId zooId) {
-        return new Space(new SpaceId(), name, zooId);
+    public static Space createSpace(String name, String status, ZooId zooId) {
+        return new Space(new SpaceId(), name, SpaceStatus.valueOf(status), zooId);
     }
 }

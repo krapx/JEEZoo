@@ -10,9 +10,15 @@ public final class SpaceResponse {
 
     private Long id;
     private String name;
+    private String status;
     private Long zooId;
 
     public static SpaceResponse fromSpace(Space space) {
-        return new SpaceResponse(space.getId().getValue(), space.getName(), space.getZooId().getValue());
+        return new SpaceResponse(
+            space.getId().getValue(),
+            space.getName(),
+            space.getStatus().name(),
+            space.getZooId().getValue()
+        );
     }
 }

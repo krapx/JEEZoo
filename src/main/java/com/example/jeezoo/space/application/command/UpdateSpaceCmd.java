@@ -9,5 +9,6 @@ public final class UpdateSpaceCmd implements Command {
     @NonNull
     public Long id;
     public String name;
+    public String status;
     public Long zooId;
 }
