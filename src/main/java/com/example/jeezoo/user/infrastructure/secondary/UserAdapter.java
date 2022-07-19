@@ -14,7 +14,9 @@ public class UserAdapter {
             userEntity.getUsername(),
             userEntity.getPassword(),
             userEntity.getMail(),
-            UserRole.valueOf(userEntity.getRole())
+            UserRole.valueOf(userEntity.getRole()),
+            userEntity.getCreationAt(),
+            userEntity.getUpdatedAt()
         );
     }
 
@@ -24,7 +26,9 @@ public class UserAdapter {
             user.getUsername(),
             user.getPassword(),
             user.getMail(),
-            user.getUserRole().name()
+            user.getUserRole().name(),
+            user.getCreationAt(),
+            user.getUpdatedAt()
         );
     }
 }

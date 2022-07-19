@@ -1,5 +1,6 @@
 package com.example.jeezoo.user.infrastructure.secondary;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "users")
 @Getter
+@AllArgsConstructor
 public final class UserEntity {
 
     @Id
@@ -22,18 +24,8 @@ public final class UserEntity {
     private String password;
     private String mail;
     private String role;
-    @CreatedDate
-    private LocalDateTime creationAt;
-    @LastModifiedDate
     private LocalDateTime updatedAt;
-
-    public UserEntity(Long id, String username, String password, String mail, String role) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.mail = mail;
-        this.role = role;
-    }
+    private LocalDateTime creationAt;
 
     public UserEntity() {
     }

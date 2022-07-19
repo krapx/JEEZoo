@@ -2,6 +2,8 @@ package com.example.jeezoo.user.domain.model;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data(staticConstructor = "of")
 public class User {
 
@@ -10,6 +12,8 @@ public class User {
     private final String password;
     private final String mail;
     private final UserRole userRole;
+    private final LocalDateTime creationAt;
+    private final LocalDateTime updatedAt;
 
     public static User create(
         String username,
@@ -22,7 +26,9 @@ public class User {
             username,
             password,
             mail,
-            userRole
+            userRole,
+            LocalDateTime.now(),
+            LocalDateTime.now()
         );
     }
 }
