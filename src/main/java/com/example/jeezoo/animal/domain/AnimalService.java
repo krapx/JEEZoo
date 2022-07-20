@@ -2,7 +2,6 @@ package com.example.jeezoo.animal.domain;
 
 import com.example.jeezoo.animal.infrastructure.primary.request.ExternalAnimalRequest;
 import com.example.jeezoo.space.domain.SpaceId;
-import com.example.jeezoo.zoo.domain.ZooId;
 
 import java.util.List;
 

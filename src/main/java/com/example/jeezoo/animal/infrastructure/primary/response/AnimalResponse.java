@@ -1,19 +1,34 @@
 package com.example.jeezoo.animal.infrastructure.primary.response;
 
 import java.time.LocalDate;
+
+import com.example.jeezoo.animal.domain.Animal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 
-@AllArgsConstructor
-@Builder
+@Data(staticConstructor = "of")
 public class AnimalResponse {
 
-  public Long      id;
-  public String    name;
-  public String    status;
-  public String    type;
-  public float     lengthMax;
-  public float     weightMax;
-  public String    imageLink;
-  public LocalDate arrivalDate;
+    private final Long id;
+    private final String name;
+    private final String type;
+    private final String status;
+    private final float lengthMax;
+    private final float weightMax;
+    private final LocalDate arrivalDate;
+    private final String imageLink;
+
+    public static AnimalResponse fromAnimal(Animal animal) {
+        return new AnimalResponse(
+            animal.getId().getValue(),
+            animal.getName(),
+            animal.getType(),
+            animal.getStatus().name(),
+            animal.getLengthMax(),
+            animal.getWeightMax(),
+            animal.getArrivalDate(),
+            animal.getImageLink()
+        );
+    }
 }

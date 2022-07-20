@@ -66,53 +66,19 @@ public class AnimalController {
     @GetMapping
     public List<AnimalResponse> getAllAnimals() {
         List<Animal> animalsResponse = queryBus.send(new RetrieveAllAnimals());
-
-        return animalsResponse.stream().map(animal -> AnimalResponse.builder()
-            .id(animal.getId().getValue())
-            .name(animal.getName())
-            .type(animal.getType())
-            .status(animal.getStatus().toString())
-            .arrivalDate(animal.getArrivalDate())
-            .lengthMax(animal.getLengthMax())
-            .weightMax(animal.getWeightMax())
-            .imageLink(animal.getImageLink())
-            .build()).collect(Collectors.toList());
-
+        return animalsResponse.stream().map(AnimalResponse::fromAnimal).toList();
     }
 
     @GetMapping("spaceId/{id}")
     public List<AnimalResponse> getAllAnimalsBySpaceId(@PathVariable Long id) {
         List<Animal> animalsResponse = animals.findBySpaceId(SpaceId.of(id));
-
-        return animalsResponse.stream().map(animal -> AnimalResponse.builder()
-            .id(animal.getId().getValue())
-            .name(animal.getName())
-            .type(animal.getType())
-            .status(animal.getStatus().toString())
-            .arrivalDate(animal.getArrivalDate())
-            .lengthMax(animal.getLengthMax())
-            .weightMax(animal.getWeightMax())
-            .imageLink(animal.getImageLink())
-            .build()).collect(Collectors.toList());
-
+        return animalsResponse.stream().map(AnimalResponse::fromAnimal).toList();
     }
 
     @GetMapping("{animalId}")
     public ResponseEntity<?> getAnimalById(@PathVariable Long animalId) {
-
         Animal animal = queryBus.send(new RetrieveAnimalById(animalId));
-
-        var animalResponse = AnimalResponse.builder()
-            .id(animal.getId().getValue())
-            .name(animal.getName())
-            .type(animal.getType())
-            .status(
-                animal.getStatus().toString())
-            .arrivalDate(animal.getArrivalDate())
-                .imageLink(animal.getImageLink())
-            .build();
-
-        return ResponseEntity.ok(animalResponse);
+        return ResponseEntity.ok(AnimalResponse.fromAnimal(animal));
     }
 
     @GetMapping("starters")

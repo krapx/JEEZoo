@@ -1,8 +1,11 @@
 package com.example.jeezoo.zoo.infrastructure.primary;
 
+
 import com.example.jeezoo.animal.domain.AnimalService;
 import com.example.jeezoo.animal.domain.AnimalStatus;
+import com.example.jeezoo.animal.domain.Animals;
 import com.example.jeezoo.animal.infrastructure.primary.request.ExternalAnimalRequest;
+import com.example.jeezoo.animal.infrastructure.primary.response.AnimalResponse;
 import com.example.jeezoo.kernel.cqs.CommandBus;
 import com.example.jeezoo.kernel.cqs.QueryBus;
 import com.example.jeezoo.kernel.exceptions.BadRequestException;
@@ -28,7 +31,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -47,9 +49,9 @@ public class ZooController {
     private final Spaces spaces;
     private final ZooService zooService;
     private final AnimalService animalService;
-
     private final Zoos zoos;
     private final UserAnimalService userAnimalService;
+    private final Animals animals;
 
     public ZooController(
         CommandBus commandBus,
@@ -58,7 +60,8 @@ public class ZooController {
         Spaces spaces, ZooService zooService,
         AnimalService animalService,
         Zoos zoos,
-        UserAnimalService userAnimalService
+        UserAnimalService userAnimalService,
+        Animals animals
     ) {
         this.commandBus = commandBus;
         this.queryBus = queryBus;
@@ -68,6 +71,7 @@ public class ZooController {
         this.animalService = animalService;
         this.zoos = zoos;
         this.userAnimalService = userAnimalService;
+        this.animals = animals;
     }
 
     @PostMapping("")
@@ -156,16 +160,23 @@ public class ZooController {
     }
 
     @GetMapping("{zooId}/game-details")
-    public ResponseEntity<ZooGameDetailsResponse> getZooDetailsById(@PathVariable Long zooId) {
+    public ResponseEntity<ZooGameDetailsResponse> getZooGameDetailsById(@PathVariable Long zooId) {
         Zoo zoo = queryBus.send(new RetrieveZooById(zooId));
+        System.out.println(zoo);
         UserAnimal userAnimal = userAnimalService.findByUserId(zoo.getUserId());
         List<SpaceId> spaceIds = spaces.findAllByZooId(zoo.getId()).stream().map(Space::getId).toList();
+        List<AnimalResponse> animalsHistory = animals
+            .findAllBySpaceIdInAndStatus(spaceIds, AnimalStatus.Dead)
+            .stream()
+            .map(AnimalResponse::fromAnimal)
+            .toList();
         Long killNumber = animalService.killNumber(spaceIds);
 
         return ResponseEntity.ok(ZooGameDetailsResponse.from(
             zoo,
             killNumber,
-            UserAnimalResponse.fromUserAnimal(userAnimal)
+            UserAnimalResponse.fromUserAnimal(userAnimal),
+            animalsHistory
         ));
     }
 

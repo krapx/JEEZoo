@@ -7,15 +7,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface Animals {
-
   AnimalId save(Animal animal);
-
   Optional<Animal> findById(AnimalId animalId);
-
   List<Animal> findAll();
-
+  List<Animal> findAllBySpaceIdInAndStatus(List<SpaceId> spaceIdList, AnimalStatus status);
   void deleteById(AnimalId animalId);
   List<Animal> findBySpaceId(SpaceId spaceId);
-
   Long countBySpaceIdInAndStatus(List<SpaceId> spaceIdList, AnimalStatus status);
 }

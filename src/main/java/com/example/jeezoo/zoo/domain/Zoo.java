@@ -3,15 +3,13 @@ package com.example.jeezoo.zoo.domain;
 import com.example.jeezoo.kernel.annotations.AggregateRoot;
 import com.example.jeezoo.user.domain.model.UserId;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@AggregateRoot
-@Getter
-@AllArgsConstructor(staticName = "of")
-@EqualsAndHashCode
+@Data(staticConstructor = "of")
 public class Zoo {
 
     private final ZooId id;
