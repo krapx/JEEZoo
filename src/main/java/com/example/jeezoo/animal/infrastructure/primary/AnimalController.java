@@ -82,7 +82,7 @@ public class AnimalController {
     }
 
     @GetMapping("starters")
-    public ResponseEntity<?> getStarters(){
+    public ResponseEntity<?> getStarters() {
         ExternalAnimalRequest[] externalAnimalRequest = animalService.getStarters();
         return ResponseEntity.ok(externalAnimalRequest);
     }
@@ -91,10 +91,15 @@ public class AnimalController {
     public ResponseEntity<?> updateAnimalById(
         @RequestBody @Valid UpdateAnimalRequest updateAnimalRequest, @PathVariable Long animalId
     ) {
-        var updateAnimalById = new UpdateAnimalCommand(animalId, updateAnimalRequest.name, updateAnimalRequest.type,
-                                                       updateAnimalRequest.status, updateAnimalRequest.lengthMax,
-                                                        updateAnimalRequest.weightMax, updateAnimalRequest.imageLink,
-                                                        updateAnimalRequest.spaceId
+        var updateAnimalById = new UpdateAnimalCommand(
+            animalId,
+            updateAnimalRequest.getName(),
+            updateAnimalRequest.getType(),
+            updateAnimalRequest.getStatus(),
+            updateAnimalRequest.getLengthMax(),
+            updateAnimalRequest.getWeightMax(),
+            updateAnimalRequest.getImageLink(),
+            updateAnimalRequest.getSpaceId()
         );
         commandBus.send(updateAnimalById);
         return ResponseEntity.accepted().build();
