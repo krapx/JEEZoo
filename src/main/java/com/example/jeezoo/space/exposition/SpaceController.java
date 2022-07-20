@@ -33,7 +33,7 @@ public class SpaceController {
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody CreateSpaceRequest request) {
-        Long id = commandBus.send(CreateSpaceCmd.of(request.name, request.status));
+        Long id = commandBus.send(CreateSpaceCmd.of(request.name(), request.status(), request.zooId()));
         return ResponseEntity.created(URI.create(id.toString())).build();
     }
 

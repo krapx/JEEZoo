@@ -18,7 +18,7 @@ public final class UpdateSpaceCmdHandler implements CommandHandler<UpdateSpaceCm
     @Override
     public Void handle(UpdateSpaceCmd command) {
         spaceService.save(Space.of(
-            new SpaceId(command.id),
+            SpaceId.of(command.id),
             command.name,
             SpaceStatus.valueOf(command.status),
             ZooId.of(command.zooId)

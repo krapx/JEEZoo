@@ -6,10 +6,7 @@ import com.example.jeezoo.animal.infrastructure.primary.request.ExternalAnimalRe
 import com.example.jeezoo.kernel.cqs.CommandBus;
 import com.example.jeezoo.kernel.cqs.QueryBus;
 import com.example.jeezoo.kernel.exceptions.BadRequestException;
-import com.example.jeezoo.space.domain.Space;
-import com.example.jeezoo.space.domain.SpaceId;
-import com.example.jeezoo.space.domain.SpaceService;
-import com.example.jeezoo.space.domain.SpaceStatus;
+import com.example.jeezoo.space.domain.*;
 import com.example.jeezoo.user.domain.model.UserId;
 import com.example.jeezoo.zoo.application.command.AddZooCommand;
 import com.example.jeezoo.zoo.application.command.DeleteZooCommand;
@@ -20,6 +17,7 @@ import com.example.jeezoo.zoo.domain.*;
 import com.example.jeezoo.zoo.infrastructure.primary.request.AddZooRequest;
 import com.example.jeezoo.zoo.infrastructure.primary.request.GenerateZooGameRequest;
 import com.example.jeezoo.zoo.infrastructure.primary.request.UpdateZooRequest;
+import com.example.jeezoo.zoo.infrastructure.primary.response.ZooDetailsResponse;
 import com.example.jeezoo.zoo.infrastructure.primary.response.ZooResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +40,7 @@ public class ZooController {
     private final CommandBus commandBus;
     private final QueryBus queryBus;
     private final SpaceService spaceService;
+    private final Spaces spaces;
     private final ZooService zooService;
     private final AnimalService animalService;
 
@@ -51,13 +50,14 @@ public class ZooController {
         CommandBus commandBus,
         QueryBus queryBus,
         SpaceService spaceService,
-        ZooService zooService,
+        Spaces spaces, ZooService zooService,
         AnimalService animalService,
         Zoos zoos
     ) {
         this.commandBus = commandBus;
         this.queryBus = queryBus;
         this.spaceService = spaceService;
+        this.spaces = spaces;
         this.zooService = zooService;
         this.animalService = animalService;
         this.zoos = zoos;
@@ -120,6 +120,19 @@ public class ZooController {
     public List<ZooResponse> getAllZoosByUserId(@PathVariable Long userId) {
         List<Zoo> zoosAllByUserId = zoos.findAllByUserId(UserId.of(userId));
         return zoosAllByUserId.stream().map(ZooResponse::fromZoo).collect(Collectors.toList());
+    }
+
+    @GetMapping("/userId/{userId}/details")
+    public List<ZooDetailsResponse> getAllZooDetailsByUserId(@PathVariable Long userId) {
+        List<Zoo> zoosAllByUserId = zoos.findAllByUserId(UserId.of(userId));
+        return zoosAllByUserId
+            .stream()
+            .map(zoo -> {
+                List<SpaceId> spaceIds = spaces.findAllByZooId(zoo.getId()).stream().map(Space::getId).toList();
+                Long killNumber = animalService.killNumber(spaceIds);
+                return ZooDetailsResponse.fromZoo(zoo, killNumber);
+            })
+            .toList();
     }
 
     @GetMapping("{zooId}")

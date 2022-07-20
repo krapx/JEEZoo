@@ -37,11 +37,11 @@ import com.example.jeezoo.space.application.query.ReadSpaceByIdQuery;
 import com.example.jeezoo.space.application.query.ReadSpaceByIdQueryHandler;
 import com.example.jeezoo.space.application.query.ReadSpaceQuery;
 import com.example.jeezoo.space.application.query.ReadSpaceQueryHandler;
-import com.example.jeezoo.space.domain.SpaceRepository;
+import com.example.jeezoo.space.domain.Spaces;
 import com.example.jeezoo.space.domain.SpaceService;
 import com.example.jeezoo.space.infrastructure.SpaceMapper;
 import com.example.jeezoo.space.infrastructure.jpa.JpaSpaceRepository;
-import com.example.jeezoo.space.infrastructure.jpa.h2.H2SpaceRepository;
+import com.example.jeezoo.space.infrastructure.jpa.h2.H2Spaces;
 import com.example.jeezoo.zoo.application.DefaultZooService;
 import com.example.jeezoo.zoo.application.command.*;
 import com.example.jeezoo.zoo.application.query.RetrieveAllZoosQuery;
@@ -150,8 +150,8 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    public SpaceRepository H2SpaceRepository() {
-        return new H2SpaceRepository(jpaSpaceRepository, spaceMapper);
+    public Spaces H2SpaceRepository() {
+        return new H2Spaces(jpaSpaceRepository, spaceMapper);
     }
 
     @Bean

@@ -15,6 +15,6 @@ public final class ReadSpaceByIdQueryHandler implements QueryHandler<ReadSpaceBy
 
     @Override
     public Space handle(ReadSpaceByIdQuery query) {
-        return spaceService.getById(new SpaceId(query.getId()));
+        return spaceService.getById(SpaceId.of(query.getId()));
     }
 }

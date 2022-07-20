@@ -37,7 +37,7 @@ public class H2Zoos implements Zoos {
 
     @Override
     public Optional<Zoo> findById(ZooId zooId) {
-        logger.info(String.format("FIND BY ID %s", zooId));
+        logger.info(String.format("[ZOOS] FIND BY ID %s", zooId));
         return jpaZoos.findById(zooId.getValue()).map(zooMapper::adapt);
     }
 

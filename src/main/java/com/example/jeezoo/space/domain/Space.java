@@ -12,6 +12,6 @@ public final class Space {
     private final ZooId zooId;
 
     public static Space createSpace(String name, String status, ZooId zooId) {
-        return new Space(new SpaceId(), name, SpaceStatus.valueOf(status), zooId);
+        return new Space(SpaceId.notCreatedYet(), name, SpaceStatus.valueOf(status), zooId);
     }
 }
