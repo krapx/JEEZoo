@@ -49,4 +49,13 @@ public class H2User implements UserRepository {
         else
             throw new NoResultException("User not found, id = " + userId.getValue());
     }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        Optional<User> user = jpaUser.findByUsername(username).map(userAdapter::toModel);
+        if (user.isPresent())
+            return user;
+        else
+            throw new NoResultException("User not found, username = " + user);
+    }
 }
