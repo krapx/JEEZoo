@@ -1,6 +1,5 @@
 package com.example.jeezoo.zoo.infrastructure.primary;
 
-
 import com.example.jeezoo.animal.domain.AnimalService;
 import com.example.jeezoo.animal.domain.AnimalStatus;
 import com.example.jeezoo.animal.domain.Animals;
@@ -57,7 +56,8 @@ public class ZooController {
         CommandBus commandBus,
         QueryBus queryBus,
         SpaceService spaceService,
-        Spaces spaces, ZooService zooService,
+        Spaces spaces,
+        ZooService zooService,
         AnimalService animalService,
         Zoos zoos,
         UserAnimalService userAnimalService,
@@ -136,21 +136,18 @@ public class ZooController {
     @GetMapping("/userId/{userId}/details")
     public List<ZooDetailsResponse> getAllZooDetailsByUserId(@PathVariable Long userId) {
         List<Zoo> zoosAllByUserId = zoos.findAllByUserId(UserId.of(userId));
-        return zoosAllByUserId
-            .stream()
-            .map(zoo -> {
-                UserAnimal userAnimal = userAnimalService.findByUserId(zoo.getUserId());
-                Long completedSpaceNumber = spaces.countByZooIdAndStatus(zoo.getId(), SpaceStatus.COMPLETED);
-                List<SpaceId> spaceIds = spaces.findAllByZooId(zoo.getId()).stream().map(Space::getId).toList();
-                Long killNumber = animalService.killNumber(spaceIds);
-                return ZooDetailsResponse.fromZoo(
-                    zoo,
-                    killNumber,
-                    completedSpaceNumber,
-                    UserAnimalResponse.fromUserAnimal(userAnimal)
-                );
-            })
-            .toList();
+        return zoosAllByUserId.stream().map(zoo -> {
+            UserAnimal userAnimal = userAnimalService.findByUserId(zoo.getUserId());
+            Long completedSpaceNumber = spaces.countByZooIdAndStatus(zoo.getId(), SpaceStatus.COMPLETED);
+            List<SpaceId> spaceIds = spaces.findAllByZooId(zoo.getId()).stream().map(Space::getId).toList();
+            Long killNumber = animalService.killNumber(spaceIds);
+            return ZooDetailsResponse.fromZoo(
+                zoo,
+                killNumber,
+                completedSpaceNumber,
+                UserAnimalResponse.fromUserAnimal(userAnimal)
+            );
+        }).toList();
     }
 
     @GetMapping("{zooId}")
