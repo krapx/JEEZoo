@@ -1,7 +1,7 @@
 package com.example.jeezoo.zoo.infrastructure.secondary;
 
 import com.example.jeezoo.kernel.Adapter;
-import com.example.jeezoo.user.domain.model.UserId;
+import com.example.jeezoo.player.domain.model.PlayerId;
 import com.example.jeezoo.zoo.domain.Zoo;
 import com.example.jeezoo.zoo.domain.ZooId;
 import com.example.jeezoo.zoo.domain.ZooStatus;
@@ -19,7 +19,7 @@ public class ZooMapper implements Adapter<ZooEntity, Zoo> {
             ZooStatus.valueOf(source.getZooStatus()),
             source.getCreatedAt(),
             source.getUpdatedAt(),
-            UserId.of(source.getUserId())
+            PlayerId.of(source.getPlayerId())
         );
     }
 }

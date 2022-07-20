@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface JpaZoos extends JpaRepository<ZooEntity, Long> {
-    List<ZooEntity> findAllByUserId(Long userId);
+    List<ZooEntity> findAllByPlayerId(Long playerId);
 }

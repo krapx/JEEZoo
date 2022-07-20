@@ -1,11 +1,10 @@
 package com.example.jeezoo.zoo.application.command;
 
 import com.example.jeezoo.kernel.cqs.Command;
-import lombok.Data;
 
 public record AddZooCommand(
     String name,
     String zooStatus,
-    Long userId
+    Long playerId
 ) implements Command {
 }

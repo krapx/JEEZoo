@@ -1,14 +1,13 @@
 package com.example.jeezoo.zoo.domain;
 
-import com.example.jeezoo.user.domain.model.UserId;
+import com.example.jeezoo.player.domain.model.PlayerId;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 public interface ZooService {
 
     Zoo getZooById(ZooId zooId);
-    ZooId addZoo(String name, ZooStatus zooStatus, UserId userId);
+    ZooId addZoo(String name, ZooStatus zooStatus, PlayerId playerId);
     Void deleteZoo(ZooId id);
-    Void update(ZooId id, String name, ZooStatus zooStatus, LocalDateTime createdAt, UserId userId);
+    Void update(ZooId id, String name, ZooStatus zooStatus, LocalDateTime createdAt, PlayerId playerId);
 }

@@ -1,6 +1,6 @@
 package com.example.jeezoo.zoo.infrastructure.secondary.h2;
 
-import com.example.jeezoo.user.domain.model.UserId;
+import com.example.jeezoo.player.domain.model.PlayerId;
 import com.example.jeezoo.zoo.domain.Zoo;
 import com.example.jeezoo.zoo.domain.ZooId;
 import com.example.jeezoo.zoo.domain.Zoos;
@@ -48,8 +48,8 @@ public class H2Zoos implements Zoos {
     }
 
     @Override
-    public List<Zoo> findAllByUserId(UserId userId) {
-        return jpaZoos.findAllByUserId(userId.getValue()).stream().map(zooMapper::adapt).toList();
+    public List<Zoo> findAllByPlayerId(PlayerId playerId) {
+        return jpaZoos.findAllByPlayerId(playerId.getValue()).stream().map(zooMapper::adapt).toList();
     }
 
     @Override

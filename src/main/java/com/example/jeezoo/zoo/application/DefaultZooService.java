@@ -1,6 +1,6 @@
 package com.example.jeezoo.zoo.application;
 
-import com.example.jeezoo.user.domain.model.UserId;
+import com.example.jeezoo.player.domain.model.PlayerId;
 import com.example.jeezoo.zoo.domain.*;
 import com.example.jeezoo.zoo.domain.exception.ZooNotFoundException;
 
@@ -20,8 +20,8 @@ public class DefaultZooService implements ZooService {
     }
 
     @Override
-    public ZooId addZoo(String name, ZooStatus zooStatus, UserId userId) {
-        Zoo zoo = Zoo.createZoo(name, zooStatus, userId);
+    public ZooId addZoo(String name, ZooStatus zooStatus, PlayerId playerId) {
+        Zoo zoo = Zoo.createZoo(name, zooStatus, playerId);
         return zoos.save(zoo);
     }
 
@@ -32,14 +32,14 @@ public class DefaultZooService implements ZooService {
     }
 
     @Override
-    public Void update(ZooId id, String name, ZooStatus zooStatus, LocalDateTime createdAt, UserId userId) {
+    public Void update(ZooId id, String name, ZooStatus zooStatus, LocalDateTime createdAt, PlayerId playerId) {
         Zoo zoo = Zoo.of(
             id,
             name,
             zooStatus,
             createdAt,
             LocalDateTime.now(),
-            userId
+                playerId
         );
         zoos.save(zoo);
         return null;
