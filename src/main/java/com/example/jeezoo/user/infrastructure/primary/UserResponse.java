@@ -5,7 +5,7 @@ import com.example.jeezoo.user.domain.model.User;
 import java.time.LocalDateTime;
 
 public record UserResponse(
-    Long userId,
+    Long id,
     String username,
     String role,
     String mail,
@@ -23,4 +23,3 @@ public record UserResponse(
         );
     }
 }
-

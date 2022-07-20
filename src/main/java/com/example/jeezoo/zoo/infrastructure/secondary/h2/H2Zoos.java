@@ -31,7 +31,7 @@ public class H2Zoos implements Zoos {
     public ZooId save(Zoo zoo) {
         logger.info(String.format("SAVE %s", zoo));
         var zooSaved = jpaZoos.save(zooAdapter.adapt(zoo));
-        return ZooId.of(zooSaved.getZooId());
+        return ZooId.of(zooSaved.getId());
     }
 
     @Override

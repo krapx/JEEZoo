@@ -9,6 +9,7 @@ public record UpdateUserAnimalRequest(
     String image,
     LocalDateTime creationAt,
     LocalDateTime updatedAt,
-    Long userId
+    Long userId,
+    Long zooId
 ) {
 }

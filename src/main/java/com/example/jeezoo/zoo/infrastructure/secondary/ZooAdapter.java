@@ -10,6 +10,11 @@ public final class ZooAdapter implements Adapter<Zoo, ZooEntity> {
 
     @Override
     public ZooEntity adapt(Zoo source) {
-        return new ZooEntity(source.getId().getValue(), source.getName(), source.getZooStatus().name());
+        return new ZooEntity(
+            source.getId().getValue(),
+            source.getName(),
+            source.getZooStatus().name(),
+            source.getUserId().getValue()
+        );
     }
 }

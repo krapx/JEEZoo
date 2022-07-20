@@ -1,19 +1,19 @@
 package com.example.jeezoo.userAnimal.domain;
 
 import com.example.jeezoo.user.domain.model.UserId;
-import com.example.jeezoo.userAnimal.domain.exception.UserAnimalBadArgumentException;
 import com.example.jeezoo.userAnimal.domain.exception.UserAnimalNotFoundException;
+import com.example.jeezoo.zoo.domain.ZooService;
 import org.springframework.stereotype.Component;
-
-import java.util.Objects;
 
 @Component
 public class UserAnimalService {
 
     private final UserAnimals userAnimals;
+    private final ZooService zooService;
 
-    public UserAnimalService(UserAnimals userAnimals) {
+    public UserAnimalService(UserAnimals userAnimals, ZooService zooService) {
         this.userAnimals = userAnimals;
+        this.zooService = zooService;
     }
 
     public UserAnimal findByUserId(UserId userId) {
@@ -21,15 +21,17 @@ public class UserAnimalService {
         return userAnimals.findByUserId(userId).orElseThrow(() -> new UserAnimalNotFoundException(userId));
     }
 
+    public UserAnimal findById(UserAnimalId userAnimalId) {
+        return userAnimals.findById(userAnimalId).orElseThrow(() -> new UserAnimalNotFoundException(userAnimalId));
+    }
+
     public UserAnimalId create(UserAnimal userAnimal) {
-        if (Objects.equals(userAnimal.getId(), -1L)) throw new UserAnimalBadArgumentException();
-        // Validation UserId
         return userAnimals.save(userAnimal);
     }
 
     public UserAnimalId update(UserAnimal userAnimal) {
-        userAnimals.findById(userAnimal.getId()).orElseThrow(() -> new UserAnimalNotFoundException(userAnimal.getId()));
-        // Validation UserId
+        findById(userAnimal.getId());
+        zooService.getZooById(userAnimal.getZooId());
         return userAnimals.save(userAnimal);
     }
 }

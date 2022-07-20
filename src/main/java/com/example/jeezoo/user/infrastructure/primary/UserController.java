@@ -42,7 +42,7 @@ public class UserController {
             .body(userId);
     }
 
-    @GetMapping("{userId}")
+    @GetMapping("{id}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable Long userId) {
         User user = userRepository.findById(UserId.of(userId));
         return ResponseEntity.ok(UserResponse.fromUser(user));

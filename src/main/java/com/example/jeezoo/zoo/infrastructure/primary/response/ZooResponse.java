@@ -1,13 +1,21 @@
 package com.example.jeezoo.zoo.infrastructure.primary.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.example.jeezoo.zoo.domain.Zoo;
+import lombok.Data;
 
-@AllArgsConstructor
-@Builder
+@Data(staticConstructor = "of")
 public class ZooResponse {
+    private final Long id;
+    private final String name;
+    private final String zooStatus;
+    private final Long userId;
 
-    public Long id;
-    public String name;
-    public String zooStatus;
+    public static ZooResponse fromZoo(Zoo zoo) {
+        return new ZooResponse(
+            zoo.getId().getValue(),
+            zoo.getName(),
+            zoo.getZooStatus().name(),
+            zoo.getUserId().getValue()
+        );
+    }
 }

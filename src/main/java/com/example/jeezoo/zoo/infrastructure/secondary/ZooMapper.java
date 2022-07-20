@@ -1,6 +1,7 @@
 package com.example.jeezoo.zoo.infrastructure.secondary;
 
 import com.example.jeezoo.kernel.Adapter;
+import com.example.jeezoo.user.domain.model.UserId;
 import com.example.jeezoo.zoo.domain.Zoo;
 import com.example.jeezoo.zoo.domain.ZooId;
 import com.example.jeezoo.zoo.domain.ZooStatus;
@@ -12,6 +13,11 @@ public class ZooMapper implements Adapter<ZooEntity, Zoo> {
 
     @Override
     public Zoo adapt(ZooEntity source) {
-        return Zoo.of(ZooId.of(source.getZooId()), source.getName(), ZooStatus.valueOf(source.getZooStatus()));
+        return Zoo.of(ZooId.of(
+            source.getId()),
+            source.getName(),
+            ZooStatus.valueOf(source.getZooStatus()),
+            UserId.of(source.getId())
+        );
     }
 }

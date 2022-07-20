@@ -7,7 +7,7 @@ public final class UserAnimalId {
 
     private final Long value;
 
-    public static UserAnimalId create() {
+    public static UserAnimalId notCreatedYet() {
         return new UserAnimalId(-1L);
     }
 }

@@ -4,6 +4,7 @@ import com.example.jeezoo.user.domain.model.UserId;
 import com.example.jeezoo.userAnimal.domain.UserAnimal;
 import com.example.jeezoo.userAnimal.domain.UserAnimalDamage;
 import com.example.jeezoo.userAnimal.domain.UserAnimalId;
+import com.example.jeezoo.zoo.domain.ZooId;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,7 +18,8 @@ public class UserAnimalMapper {
             userAnimalEntity.getImage(),
             userAnimalEntity.getCreationAt(),
             userAnimalEntity.getUpdatedAt(),
-            UserId.of(userAnimalEntity.getUserId())
+            UserId.of(userAnimalEntity.getUserId()),
+            ZooId.of(userAnimalEntity.getZooId())
         );
     }
 
@@ -29,7 +31,8 @@ public class UserAnimalMapper {
             userAnimal.getImage(),
             userAnimal.getCreationAt(),
             userAnimal.getUpdatedAt(),
-            userAnimal.getUserId().getValue()
+            userAnimal.getUserId().getValue(),
+            userAnimal.getZooId().getValue()
         );
     }
 }

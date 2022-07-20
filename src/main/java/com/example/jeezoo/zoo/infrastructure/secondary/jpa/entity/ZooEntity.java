@@ -7,18 +7,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity(name = "Zoos")
+@Entity(name = "zoos")
 @AllArgsConstructor
 @Getter
 public class ZooEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long zooId;
+    private Long id;
     private String name;
-    private String zooStatus; // IN_PROGRESS FINISH
+    private String zooStatus;
+    private Long userId;
 
     public ZooEntity() {
-
     }
 }
