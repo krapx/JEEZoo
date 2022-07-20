@@ -8,6 +8,9 @@ import com.example.jeezoo.kernel.cqs.QueryBus;
 import com.example.jeezoo.kernel.exceptions.BadRequestException;
 import com.example.jeezoo.space.domain.*;
 import com.example.jeezoo.user.domain.model.UserId;
+import com.example.jeezoo.userAnimal.domain.UserAnimal;
+import com.example.jeezoo.userAnimal.domain.UserAnimalService;
+import com.example.jeezoo.userAnimal.infrastructure.primary.UserAnimalResponse;
 import com.example.jeezoo.zoo.application.command.AddZooCommand;
 import com.example.jeezoo.zoo.application.command.DeleteZooCommand;
 import com.example.jeezoo.zoo.application.command.UpdateZooCommand;
@@ -18,6 +21,7 @@ import com.example.jeezoo.zoo.infrastructure.primary.request.AddZooRequest;
 import com.example.jeezoo.zoo.infrastructure.primary.request.GenerateZooGameRequest;
 import com.example.jeezoo.zoo.infrastructure.primary.request.UpdateZooRequest;
 import com.example.jeezoo.zoo.infrastructure.primary.response.ZooDetailsResponse;
+import com.example.jeezoo.zoo.infrastructure.primary.response.ZooGameDetailsResponse;
 import com.example.jeezoo.zoo.infrastructure.primary.response.ZooResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +49,7 @@ public class ZooController {
     private final AnimalService animalService;
 
     private final Zoos zoos;
+    private final UserAnimalService userAnimalService;
 
     public ZooController(
         CommandBus commandBus,
@@ -52,7 +57,8 @@ public class ZooController {
         SpaceService spaceService,
         Spaces spaces, ZooService zooService,
         AnimalService animalService,
-        Zoos zoos
+        Zoos zoos,
+        UserAnimalService userAnimalService
     ) {
         this.commandBus = commandBus;
         this.queryBus = queryBus;
@@ -61,6 +67,7 @@ public class ZooController {
         this.zooService = zooService;
         this.animalService = animalService;
         this.zoos = zoos;
+        this.userAnimalService = userAnimalService;
     }
 
     @PostMapping("")
@@ -128,9 +135,16 @@ public class ZooController {
         return zoosAllByUserId
             .stream()
             .map(zoo -> {
+                UserAnimal userAnimal = userAnimalService.findByUserId(zoo.getUserId());
+                Long completedSpaceNumber = spaces.countByZooIdAndStatus(zoo.getId(), SpaceStatus.COMPLETED);
                 List<SpaceId> spaceIds = spaces.findAllByZooId(zoo.getId()).stream().map(Space::getId).toList();
                 Long killNumber = animalService.killNumber(spaceIds);
-                return ZooDetailsResponse.fromZoo(zoo, killNumber);
+                return ZooDetailsResponse.fromZoo(
+                    zoo,
+                    killNumber,
+                    completedSpaceNumber,
+                    UserAnimalResponse.fromUserAnimal(userAnimal)
+                );
             })
             .toList();
     }
@@ -139,6 +153,20 @@ public class ZooController {
     public ResponseEntity<ZooResponse> getZooById(@PathVariable Long zooId) {
         Zoo zoo = queryBus.send(new RetrieveZooById(zooId));
         return ResponseEntity.ok(ZooResponse.fromZoo(zoo));
+    }
+
+    @GetMapping("{zooId}/game-details")
+    public ResponseEntity<ZooGameDetailsResponse> getZooDetailsById(@PathVariable Long zooId) {
+        Zoo zoo = queryBus.send(new RetrieveZooById(zooId));
+        UserAnimal userAnimal = userAnimalService.findByUserId(zoo.getUserId());
+        List<SpaceId> spaceIds = spaces.findAllByZooId(zoo.getId()).stream().map(Space::getId).toList();
+        Long killNumber = animalService.killNumber(spaceIds);
+
+        return ResponseEntity.ok(ZooGameDetailsResponse.from(
+            zoo,
+            killNumber,
+            UserAnimalResponse.fromUserAnimal(userAnimal)
+        ));
     }
 
     @PutMapping("{zooId}")

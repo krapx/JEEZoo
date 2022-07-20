@@ -11,4 +11,5 @@ public interface Spaces {
     Optional<Space> findById(SpaceId id);
     SpaceId save(Space Space);
     SpaceId delete(SpaceId id);
+    Long countByZooIdAndStatus(ZooId zooId, SpaceStatus status);
 }

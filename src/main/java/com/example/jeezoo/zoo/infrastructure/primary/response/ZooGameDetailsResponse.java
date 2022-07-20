@@ -7,7 +7,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data(staticConstructor = "of")
-public class ZooDetailsResponse {
+public class ZooGameDetailsResponse {
 
     private final Long id;
     private final String name;
@@ -17,14 +17,13 @@ public class ZooDetailsResponse {
     private final Long userId;
 
     private final Long killNumber;
-    private final Long completedSpacesNumber;
     private final UserAnimalResponse userAnimal;
 
-    public static ZooDetailsResponse fromZoo(
-        Zoo zoo, Long killNumber, Long completedSpacesNumber,
+    public static ZooGameDetailsResponse from(
+        Zoo zoo, Long killNumber,
         UserAnimalResponse userAnimalResponse
     ) {
-        return new ZooDetailsResponse(
+        return new ZooGameDetailsResponse(
             zoo.getId().getValue(),
             zoo.getName(),
             zoo.getZooStatus().name(),
@@ -32,7 +31,6 @@ public class ZooDetailsResponse {
             zoo.getUpdatedAt(),
             zoo.getUserId().getValue(),
             killNumber,
-            completedSpacesNumber,
             userAnimalResponse
         );
     }

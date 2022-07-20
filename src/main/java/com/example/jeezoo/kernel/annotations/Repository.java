@@ -1,5 +1,5 @@
 package com.example.jeezoo.kernel.annotations;
 
-public @interface Repository {
-
-}
+//public @interface Repository {
+//
+//}

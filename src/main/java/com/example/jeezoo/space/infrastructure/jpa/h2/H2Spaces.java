@@ -2,6 +2,7 @@ package com.example.jeezoo.space.infrastructure.jpa.h2;
 
 import com.example.jeezoo.space.domain.Space;
 import com.example.jeezoo.space.domain.SpaceId;
+import com.example.jeezoo.space.domain.SpaceStatus;
 import com.example.jeezoo.space.domain.Spaces;
 import com.example.jeezoo.space.infrastructure.SpaceMapper;
 import com.example.jeezoo.space.infrastructure.jpa.JpaSpaceRepository;
@@ -55,5 +56,10 @@ public class H2Spaces implements Spaces {
     public SpaceId delete(SpaceId id) {
         jpaSpaceRepository.deleteById(id.getValue());
         return id;
+    }
+
+    @Override
+    public Long countByZooIdAndStatus(ZooId zooId, SpaceStatus status) {
+        return jpaSpaceRepository.countByZooIdAndStatus(zooId.getValue(), status.name());
     }
 }
