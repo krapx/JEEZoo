@@ -1,10 +1,10 @@
-INSERT INTO users (id, username, password, mail, role, creation_at, updated_at)
-VALUES (900L, 'user', 'pouetpouet', 'admin@gmail.com', 'PLAYER', '2022-07-18', '2022-07-18');
+INSERT INTO players (id, username, password, mail, role, creation_at, updated_at)
+VALUES (900L, 'player', 'pouetpouet', 'admin@gmail.com', 'PLAYER', '2022-07-18', '2022-07-18');
 
-INSERT INTO zoos (id, name, zoo_status, created_at, updated_at, user_id)
+INSERT INTO zoos (id, name, zoo_status, created_at, updated_at, player_id)
 VALUES (1000L, 'zoo1', 'IN_PROGRESS', '2022-07-18', '2022-07-18', 900L);
 
-INSERT INTO user_animals (id, damage, name, image, creation_at, updated_at, user_id, zoo_id)
+INSERT INTO player_animals (id, damage, name, image, creation_at, updated_at, player_id, zoo_id)
 VALUES (1100L, 2L, 'tortank', 'https://i.skyrock.net/2477/43222477/pics/2938629059_1_3.jpg',
         '2022-07-18', '2022-07-18', 900L, 1000L);
 

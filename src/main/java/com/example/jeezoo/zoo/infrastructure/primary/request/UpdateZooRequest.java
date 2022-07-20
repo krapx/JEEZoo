@@ -6,6 +6,6 @@ public record UpdateZooRequest(
     String name,
     String zooStatus,
     LocalDateTime createdAt,
-    Long userId
+    Long playerId
 ) {
 }
