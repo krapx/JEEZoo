@@ -14,6 +14,8 @@ public final class ZooAdapter implements Adapter<Zoo, ZooEntity> {
             source.getId().getValue(),
             source.getName(),
             source.getZooStatus().name(),
+            source.getCreatedAt(),
+            source.getUpdatedAt(),
             source.getUserId().getValue()
         );
     }

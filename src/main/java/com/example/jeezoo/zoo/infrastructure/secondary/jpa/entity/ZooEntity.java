@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
 
 @Entity(name = "zoos")
 @AllArgsConstructor
@@ -17,6 +18,8 @@ public class ZooEntity {
     private Long id;
     private String name;
     private String zooStatus;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private Long userId;
 
     public ZooEntity() {

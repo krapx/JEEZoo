@@ -20,6 +20,7 @@ public final class UpdateZooCommandHandler implements CommandHandler<UpdateZooCo
             ZooId.of(command.id()),
             command.name(),
             ZooStatus.valueOf(command.zooStatus()),
+            command.createdAt(),
             UserId.of(command.userId())
         );
         return null;

@@ -1,5 +1,6 @@
 package com.example.jeezoo.zoo.infrastructure.secondary.h2;
 
+import com.example.jeezoo.user.domain.model.UserId;
 import com.example.jeezoo.zoo.domain.Zoo;
 import com.example.jeezoo.zoo.domain.ZooId;
 import com.example.jeezoo.zoo.domain.Zoos;
@@ -44,6 +45,11 @@ public class H2Zoos implements Zoos {
     public List<Zoo> findAll() {
         logger.info("FIND ALL");
         return jpaZoos.findAll().stream().map(zooMapper::adapt).toList();
+    }
+
+    @Override
+    public List<Zoo> findAllByUserId(UserId userId) {
+        return jpaZoos.findAllByUserId(userId.getValue()).stream().map(zooMapper::adapt).toList();
     }
 
     @Override

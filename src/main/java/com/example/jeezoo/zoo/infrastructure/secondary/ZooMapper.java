@@ -17,7 +17,9 @@ public class ZooMapper implements Adapter<ZooEntity, Zoo> {
             source.getId()),
             source.getName(),
             ZooStatus.valueOf(source.getZooStatus()),
-            UserId.of(source.getId())
+            source.getCreatedAt(),
+            source.getUpdatedAt(),
+            UserId.of(source.getUserId())
         );
     }
 }

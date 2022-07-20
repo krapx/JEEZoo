@@ -16,10 +16,7 @@ import com.example.jeezoo.zoo.application.command.DeleteZooCommand;
 import com.example.jeezoo.zoo.application.command.UpdateZooCommand;
 import com.example.jeezoo.zoo.application.query.RetrieveAllZoosQuery;
 import com.example.jeezoo.zoo.application.query.RetrieveZooById;
-import com.example.jeezoo.zoo.domain.Zoo;
-import com.example.jeezoo.zoo.domain.ZooId;
-import com.example.jeezoo.zoo.domain.ZooService;
-import com.example.jeezoo.zoo.domain.ZooStatus;
+import com.example.jeezoo.zoo.domain.*;
 import com.example.jeezoo.zoo.infrastructure.primary.request.AddZooRequest;
 import com.example.jeezoo.zoo.infrastructure.primary.request.GenerateZooGameRequest;
 import com.example.jeezoo.zoo.infrastructure.primary.request.UpdateZooRequest;
@@ -48,18 +45,22 @@ public class ZooController {
     private final ZooService zooService;
     private final AnimalService animalService;
 
+    private final Zoos zoos;
+
     public ZooController(
         CommandBus commandBus,
         QueryBus queryBus,
         SpaceService spaceService,
         ZooService zooService,
-        AnimalService animalService
+        AnimalService animalService,
+        Zoos zoos
     ) {
         this.commandBus = commandBus;
         this.queryBus = queryBus;
         this.spaceService = spaceService;
         this.zooService = zooService;
         this.animalService = animalService;
+        this.zoos = zoos;
     }
 
     @PostMapping("")
@@ -93,7 +94,8 @@ public class ZooController {
                 .of(restTemplate.getForObject(url, ExternalAnimalRequest[].class))
                 .ifPresentOrElse(externalAnimalRequests -> {
                     Arrays.stream(externalAnimalRequests).forEach(externalAnimalRequest -> {
-                        animalService.addAnimal(externalAnimalRequest.name,
+                        animalService.addAnimal(
+                            externalAnimalRequest.name,
                             externalAnimalRequest.animal_type,
                             AnimalStatus.Alive.name(),
                             externalAnimalRequest.length_max,
@@ -114,8 +116,14 @@ public class ZooController {
         return zoos.stream().map(ZooResponse::fromZoo).collect(Collectors.toList());
     }
 
+    @GetMapping("/userId/{userId}")
+    public List<ZooResponse> getAllZoosByUserId(@PathVariable Long userId) {
+        List<Zoo> zoosAllByUserId = zoos.findAllByUserId(UserId.of(userId));
+        return zoosAllByUserId.stream().map(ZooResponse::fromZoo).collect(Collectors.toList());
+    }
+
     @GetMapping("{zooId}")
-    public ResponseEntity<?> getZooById(@PathVariable Long zooId) {
+    public ResponseEntity<ZooResponse> getZooById(@PathVariable Long zooId) {
         Zoo zoo = queryBus.send(new RetrieveZooById(zooId));
         return ResponseEntity.ok(ZooResponse.fromZoo(zoo));
     }
@@ -124,9 +132,11 @@ public class ZooController {
     public ResponseEntity<?> updateZooById(
         @RequestBody @Valid UpdateZooRequest updateZooRequest, @PathVariable Long zooId
     ) {
-        var updateZooById = new UpdateZooCommand(zooId,
+        var updateZooById = new UpdateZooCommand(
+            zooId,
             updateZooRequest.name(),
             updateZooRequest.zooStatus(),
+            updateZooRequest.createdAt(),
             updateZooRequest.userId()
         );
         commandBus.send(updateZooById);
