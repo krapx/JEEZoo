@@ -1,17 +1,12 @@
 package com.example.jeezoo.zoo.infrastructure.primary.request;
 
 import com.example.jeezoo.space.exposition.request.GenerateSpaceRequest;
+import lombok.Data;
 
 import java.util.List;
 
-public final class GenerateZooGameRequest {
-    public List<GenerateSpaceRequest> spaces;
-
-    @Override
-    public String toString() {
-        return "GenerateZooGameRequest{" +
-            "generateSpaces=" + spaces +
-            '}';
-    }
+public record GenerateZooGameRequest(
+    Long userId,
+    List<GenerateSpaceRequest> spaces
+) {
 }
-

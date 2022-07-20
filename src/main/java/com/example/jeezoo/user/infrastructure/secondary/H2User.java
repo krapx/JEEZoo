@@ -28,7 +28,7 @@ public class H2User implements UserRepository {
     public UserId add(User user) {
         var userEntity = jpaUser.save(userAdapter.toEntity(user));
         var userSaved = userAdapter.toModel(userEntity);
-        return userSaved.getUserId();
+        return userSaved.getId();
     }
 
     @Override

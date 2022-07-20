@@ -18,18 +18,14 @@ public final class UserAnimalEntity {
     @Id
     @GeneratedValue
     private Long id;
-
     private Long damage;
-
     private String name;
-
     private String image;
-
-    @CreatedDate
     private LocalDateTime creationAt;
-
-    @LastModifiedDate
     private LocalDateTime updatedAt;
-
     private Long userId;
+    private Long zooId;
+
+    public UserAnimalEntity() {
+    }
 }

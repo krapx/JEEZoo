@@ -3,10 +3,13 @@ package com.example.jeezoo.zoo.application.command;
 import com.example.jeezoo.kernel.cqs.Command;
 import lombok.Data;
 
-@Data
-public final class UpdateZooCommand implements Command {
+import java.time.LocalDateTime;
 
-    private final Long id;
-    private final String name;
-    private final String zooStatus;
+public record UpdateZooCommand(
+    Long id,
+    String name,
+    String zooStatus,
+    LocalDateTime createdAt,
+    Long userId
+) implements Command {
 }

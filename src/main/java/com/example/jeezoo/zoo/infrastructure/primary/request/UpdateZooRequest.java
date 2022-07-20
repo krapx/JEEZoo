@@ -1,11 +1,11 @@
 package com.example.jeezoo.zoo.infrastructure.primary.request;
 
-public class UpdateZooRequest {
+import java.time.LocalDateTime;
 
-    public String name;
-    public String location;
-    public Float size;
-    public String spaceCapacity;
-    public String peopleCapacity;
-    public String zooStatus;
+public record UpdateZooRequest(
+    String name,
+    String zooStatus,
+    LocalDateTime createdAt,
+    Long userId
+) {
 }

@@ -6,6 +6,7 @@ import com.example.jeezoo.userAnimal.domain.UserAnimalId;
 import com.example.jeezoo.userAnimal.domain.UserAnimals;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -24,20 +25,25 @@ public class H2UserAnimals implements UserAnimals {
     }
 
     @Override
+    public List<UserAnimal> findAll() {
+        return jpaUserAnimals.findAll().stream().map(userAnimalMapper::toModel).toList();
+    }
+
+    @Override
     public Optional<UserAnimal> findById(UserAnimalId userAnimalId) {
-        logger.info(format("[H2UserAnimals] findById {}", userAnimalId.getValue()));
+        logger.info(format("[H2UserAnimals] findById %d", userAnimalId.getValue()));
         return jpaUserAnimals.findById(userAnimalId.getValue()).map(userAnimalMapper::toModel);
     }
 
     @Override
     public Optional<UserAnimal> findByUserId(UserId userId) {
-        logger.info(format("[H2UserAnimals] findByUserId {}", userId.getValue()));
+        logger.info(format("[H2UserAnimals] findByUserId %d", userId.getValue()));
         return jpaUserAnimals.findByUserId(userId.getValue()).map(userAnimalMapper::toModel);
     }
 
     @Override
     public UserAnimalId save(UserAnimal userAnimal) {
-        logger.info(format("[H2UserAnimals] save {}", userAnimal.toString()));
+        logger.info(format("[H2UserAnimals] save %s}", userAnimal.toString()));
         return userAnimalMapper.toModel(jpaUserAnimals.save(userAnimalMapper.toEntity(userAnimal))).getId();
     }
 }

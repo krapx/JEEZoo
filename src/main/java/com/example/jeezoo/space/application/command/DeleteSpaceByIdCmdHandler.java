@@ -6,7 +6,7 @@ import com.example.jeezoo.space.domain.SpaceService;
 
 public final class DeleteSpaceByIdCmdHandler implements CommandHandler<DeleteSpaceByIdCmd, Void> {
 
-    private SpaceService spaceService;
+    private final SpaceService spaceService;
 
     public DeleteSpaceByIdCmdHandler(SpaceService spaceService) {
         this.spaceService = spaceService;
@@ -14,7 +14,7 @@ public final class DeleteSpaceByIdCmdHandler implements CommandHandler<DeleteSpa
 
     @Override
     public Void handle(DeleteSpaceByIdCmd command) {
-        spaceService.remove(new SpaceId(command.getId()));
+        spaceService.remove(SpaceId.of(command.getId()));
         return null;
     }
 }

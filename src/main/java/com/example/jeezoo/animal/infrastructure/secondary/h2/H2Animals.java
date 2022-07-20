@@ -2,6 +2,7 @@ package com.example.jeezoo.animal.infrastructure.secondary.h2;
 
 import com.example.jeezoo.animal.domain.Animal;
 import com.example.jeezoo.animal.domain.AnimalId;
+import com.example.jeezoo.animal.domain.AnimalStatus;
 import com.example.jeezoo.animal.domain.Animals;
 import com.example.jeezoo.animal.infrastructure.secondary.AnimalAdapter;
 import com.example.jeezoo.animal.infrastructure.secondary.AnimalMapper;
@@ -12,6 +13,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import com.example.jeezoo.space.domain.SpaceId;
+import com.example.jeezoo.zoo.domain.ZooId;
 import org.springframework.stereotype.Repository;
 
 @Repository()
@@ -57,5 +59,10 @@ public class H2Animals implements Animals {
   public List<Animal> findBySpaceId(SpaceId spaceId) {
     logger.info("FIND ALL BY SPACE ID");
     return jpaAnimals.findBySpaceId(spaceId.getValue()).stream().map(animalMapper::adapt).collect(Collectors.toList());
+  }
+
+  @Override
+  public Long countBySpaceIdInAndStatus(List<SpaceId> spaceIdList, AnimalStatus status) {
+    return jpaAnimals.countBySpaceIdInAndStatus(spaceIdList.stream().map(SpaceId::getValue).toList(), status.name());
   }
 }

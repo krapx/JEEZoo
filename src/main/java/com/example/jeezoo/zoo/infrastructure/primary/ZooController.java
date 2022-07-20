@@ -1,28 +1,23 @@
 package com.example.jeezoo.zoo.infrastructure.primary;
 
-import com.example.jeezoo.animal.application.DefaultAnimalService;
 import com.example.jeezoo.animal.domain.AnimalService;
 import com.example.jeezoo.animal.domain.AnimalStatus;
 import com.example.jeezoo.animal.infrastructure.primary.request.ExternalAnimalRequest;
 import com.example.jeezoo.kernel.cqs.CommandBus;
 import com.example.jeezoo.kernel.cqs.QueryBus;
 import com.example.jeezoo.kernel.exceptions.BadRequestException;
-import com.example.jeezoo.space.domain.Space;
-import com.example.jeezoo.space.domain.SpaceId;
-import com.example.jeezoo.space.domain.SpaceService;
-import com.example.jeezoo.space.domain.SpaceStatus;
+import com.example.jeezoo.space.domain.*;
+import com.example.jeezoo.user.domain.model.UserId;
 import com.example.jeezoo.zoo.application.command.AddZooCommand;
 import com.example.jeezoo.zoo.application.command.DeleteZooCommand;
 import com.example.jeezoo.zoo.application.command.UpdateZooCommand;
 import com.example.jeezoo.zoo.application.query.RetrieveAllZoosQuery;
 import com.example.jeezoo.zoo.application.query.RetrieveZooById;
-import com.example.jeezoo.zoo.domain.Zoo;
-import com.example.jeezoo.zoo.domain.ZooId;
-import com.example.jeezoo.zoo.domain.ZooService;
-import com.example.jeezoo.zoo.domain.ZooStatus;
+import com.example.jeezoo.zoo.domain.*;
 import com.example.jeezoo.zoo.infrastructure.primary.request.AddZooRequest;
 import com.example.jeezoo.zoo.infrastructure.primary.request.GenerateZooGameRequest;
 import com.example.jeezoo.zoo.infrastructure.primary.request.UpdateZooRequest;
+import com.example.jeezoo.zoo.infrastructure.primary.response.ZooDetailsResponse;
 import com.example.jeezoo.zoo.infrastructure.primary.response.ZooResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,55 +39,60 @@ public class ZooController {
 
     private final CommandBus commandBus;
     private final QueryBus queryBus;
-
     private final SpaceService spaceService;
+    private final Spaces spaces;
     private final ZooService zooService;
     private final AnimalService animalService;
 
+    private final Zoos zoos;
+
     public ZooController(
-        CommandBus commandBus, QueryBus queryBus, SpaceService spaceService, ZooService zooService,
-        AnimalService animalService
+        CommandBus commandBus,
+        QueryBus queryBus,
+        SpaceService spaceService,
+        Spaces spaces, ZooService zooService,
+        AnimalService animalService,
+        Zoos zoos
     ) {
         this.commandBus = commandBus;
         this.queryBus = queryBus;
         this.spaceService = spaceService;
+        this.spaces = spaces;
         this.zooService = zooService;
         this.animalService = animalService;
+        this.zoos = zoos;
     }
 
     @PostMapping("")
     public ResponseEntity<Void> addZoo(@RequestBody @Valid AddZooRequest addZooRequest) {
-        var addZooCommand = new AddZooCommand(
-            addZooRequest.name,
-            addZooRequest.zooStatus
-        );
+        var addZooCommand = new AddZooCommand(addZooRequest.name(), addZooRequest.zooStatus(), addZooRequest.userId());
 
         final ZooId zooId = commandBus.send(addZooCommand);
 
-        return ResponseEntity.created(linkTo(methodOn(ZooController.class).getZooById(zooId.getValue())).toUri())
+        return ResponseEntity
+            .created(linkTo(methodOn(ZooController.class).getZooById(zooId.getValue())).toUri())
             .build();
     }
 
     @PostMapping("generate")
-    public ResponseEntity<GenerateZooGameRequest> generateZooGame(@RequestBody @Valid GenerateZooGameRequest generateZooGame) {
+    public ResponseEntity<GenerateZooGameRequest> generateZooGame(
+        @RequestBody @Valid GenerateZooGameRequest generateZooGame
+    ) {
 
         // 1 CREATE ZOO
-        ZooId zooId = zooService.addZoo("zoo_1", ZooStatus.IN_PROGRESS);
+        ZooId zooId = zooService.addZoo("zoo_1", ZooStatus.IN_PROGRESS, UserId.of(generateZooGame.userId()));
 
-        generateZooGame.spaces.forEach(space -> {
+        generateZooGame.spaces().forEach(space -> {
 
             // 2 CREATE SPACES
-            SpaceId spaceId = spaceService.save(Space.createSpace(
-                space.name,
-                SpaceStatus.LOCKED.name(),
-                zooId)
-            );
+            SpaceId spaceId = spaceService.save(Space.createSpace(space.name, SpaceStatus.LOCKED.name(), zooId));
 
             // 3 CREATE ANIMALS
             String url = "https://zoo-animal-api.herokuapp.com/animals/rand/" + space.animalsNumber;
             RestTemplate restTemplate = new RestTemplate();
-            Optional.of(restTemplate.getForObject(url, ExternalAnimalRequest[].class)).ifPresentOrElse(
-                externalAnimalRequests -> {
+            Optional
+                .of(restTemplate.getForObject(url, ExternalAnimalRequest[].class))
+                .ifPresentOrElse(externalAnimalRequests -> {
                     Arrays.stream(externalAnimalRequests).forEach(externalAnimalRequest -> {
                         animalService.addAnimal(
                             externalAnimalRequest.name,
@@ -104,9 +104,7 @@ public class ZooController {
                             spaceId.getValue()
                         );
                     });
-                },
-                () -> new BadRequestException("")
-            );
+                }, () -> new BadRequestException(""));
         });
 
         return ResponseEntity.ok(generateZooGame);
@@ -115,27 +113,32 @@ public class ZooController {
     @GetMapping
     public List<ZooResponse> getAllZoos() {
         List<Zoo> zoos = queryBus.send(new RetrieveAllZoosQuery());
+        return zoos.stream().map(ZooResponse::fromZoo).collect(Collectors.toList());
+    }
 
-        return zoos.stream().map(zoo -> {
-            return ZooResponse.builder()
-                .id(zoo.getId().getValue())
-                .name(zoo.getName())
-                .zooStatus(zoo.getZooStatus().name())
-                .build();
-        }).collect(Collectors.toList());
+    @GetMapping("/userId/{userId}")
+    public List<ZooResponse> getAllZoosByUserId(@PathVariable Long userId) {
+        List<Zoo> zoosAllByUserId = zoos.findAllByUserId(UserId.of(userId));
+        return zoosAllByUserId.stream().map(ZooResponse::fromZoo).collect(Collectors.toList());
+    }
+
+    @GetMapping("/userId/{userId}/details")
+    public List<ZooDetailsResponse> getAllZooDetailsByUserId(@PathVariable Long userId) {
+        List<Zoo> zoosAllByUserId = zoos.findAllByUserId(UserId.of(userId));
+        return zoosAllByUserId
+            .stream()
+            .map(zoo -> {
+                List<SpaceId> spaceIds = spaces.findAllByZooId(zoo.getId()).stream().map(Space::getId).toList();
+                Long killNumber = animalService.killNumber(spaceIds);
+                return ZooDetailsResponse.fromZoo(zoo, killNumber);
+            })
+            .toList();
     }
 
     @GetMapping("{zooId}")
-    public ResponseEntity<?> getZooById(@PathVariable Long zooId) {
-
+    public ResponseEntity<ZooResponse> getZooById(@PathVariable Long zooId) {
         Zoo zoo = queryBus.send(new RetrieveZooById(zooId));
-
-        var zooResponse = ZooResponse.builder()
-            .name(zoo.getName())
-            .zooStatus(zoo.getZooStatus().name())
-            .build();
-
-        return ResponseEntity.ok(zooResponse);
+        return ResponseEntity.ok(ZooResponse.fromZoo(zoo));
     }
 
     @PutMapping("{zooId}")
@@ -144,8 +147,10 @@ public class ZooController {
     ) {
         var updateZooById = new UpdateZooCommand(
             zooId,
-            updateZooRequest.name,
-            updateZooRequest.zooStatus
+            updateZooRequest.name(),
+            updateZooRequest.zooStatus(),
+            updateZooRequest.createdAt(),
+            updateZooRequest.userId()
         );
         commandBus.send(updateZooById);
         return ResponseEntity.ok().build();

@@ -6,29 +6,29 @@ import com.example.jeezoo.zoo.domain.ZooService;
 import java.util.List;
 
 public class SpaceService {
-    private final SpaceRepository spaceRepository;
+    private final Spaces spaces;
 
     private final ZooService zooService;
 
-    public SpaceService(SpaceRepository spaceRepository, ZooService zooService) {
-        this.spaceRepository = spaceRepository;
+    public SpaceService(Spaces spaces, ZooService zooService) {
+        this.spaces = spaces;
         this.zooService = zooService;
     }
 
     public List<Space> getAll() {
-        return spaceRepository.findAll();
+        return spaces.findAll();
     }
 
     public Space getById(SpaceId id) {
-        return spaceRepository.findById(id).orElseThrow(() -> new SpaceNotFoundException(id));
+        return spaces.findById(id).orElseThrow(() -> new SpaceNotFoundException(id));
     }
 
     public SpaceId save(Space space) {
         zooService.getZooById(space.getZooId());
-        return spaceRepository.save(space);
+        return spaces.save(space);
     }
 
     public SpaceId remove(SpaceId id) {
-        return spaceRepository.delete(id);
+        return spaces.delete(id);
     }
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NonNull;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Data(staticConstructor = "of")
 public final class CreateSpaceCmd implements Command {
@@ -12,5 +13,6 @@ public final class CreateSpaceCmd implements Command {
     public final String name;
     @NotEmpty
     public final String status;
-    public Long zooId;
+    @NotNull
+    public final Long zooId;
 }

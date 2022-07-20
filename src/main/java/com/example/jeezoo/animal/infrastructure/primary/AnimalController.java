@@ -67,37 +67,33 @@ public class AnimalController {
     public List<AnimalResponse> getAllAnimals() {
         List<Animal> animalsResponse = queryBus.send(new RetrieveAllAnimals());
 
-        return animalsResponse.stream().map(animal -> {
-            return AnimalResponse.builder()
-                .id(animal.getId().getValue())
-                .name(animal.getName())
-                .type(animal.getType().toString())
-                .status(animal.getStatus().toString())
-                .arrivalDate(animal.getArrivalDate())
-                .lengthMax(animal.getLengthMax())
-                .weightMax(animal.getWeightMax())
-                .imageLink(animal.getImageLink())
-                .build();
-        }).collect(Collectors.toList());
+        return animalsResponse.stream().map(animal -> AnimalResponse.builder()
+            .id(animal.getId().getValue())
+            .name(animal.getName())
+            .type(animal.getType())
+            .status(animal.getStatus().toString())
+            .arrivalDate(animal.getArrivalDate())
+            .lengthMax(animal.getLengthMax())
+            .weightMax(animal.getWeightMax())
+            .imageLink(animal.getImageLink())
+            .build()).collect(Collectors.toList());
 
     }
 
     @GetMapping("spaceId/{id}")
     public List<AnimalResponse> getAllAnimalsBySpaceId(@PathVariable Long id) {
-        List<Animal> animalsResponse = animals.findBySpaceId(new SpaceId(id));
+        List<Animal> animalsResponse = animals.findBySpaceId(SpaceId.of(id));
 
-        return animalsResponse.stream().map(animal -> {
-            return AnimalResponse.builder()
-                .id(animal.getId().getValue())
-                .name(animal.getName())
-                .type(animal.getType().toString())
-                .status(animal.getStatus().toString())
-                .arrivalDate(animal.getArrivalDate())
-                .lengthMax(animal.getLengthMax())
-                .weightMax(animal.getWeightMax())
-                .imageLink(animal.getImageLink())
-                .build();
-        }).collect(Collectors.toList());
+        return animalsResponse.stream().map(animal -> AnimalResponse.builder()
+            .id(animal.getId().getValue())
+            .name(animal.getName())
+            .type(animal.getType())
+            .status(animal.getStatus().toString())
+            .arrivalDate(animal.getArrivalDate())
+            .lengthMax(animal.getLengthMax())
+            .weightMax(animal.getWeightMax())
+            .imageLink(animal.getImageLink())
+            .build()).collect(Collectors.toList());
 
     }
 
@@ -109,7 +105,7 @@ public class AnimalController {
         var animalResponse = AnimalResponse.builder()
             .id(animal.getId().getValue())
             .name(animal.getName())
-            .type(animal.getType().toString())
+            .type(animal.getType())
             .status(
                 animal.getStatus().toString())
             .arrivalDate(animal.getArrivalDate())

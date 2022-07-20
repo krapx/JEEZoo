@@ -1,17 +1,12 @@
 package com.example.jeezoo.animal.application;
 
-import com.example.jeezoo.animal.domain.Animal;
-import com.example.jeezoo.animal.domain.AnimalId;
-import com.example.jeezoo.animal.domain.AnimalService;
-import com.example.jeezoo.animal.domain.Animals;
+import com.example.jeezoo.animal.domain.*;
 import com.example.jeezoo.animal.infrastructure.primary.request.ExternalAnimalRequest;
-import com.example.jeezoo.animal.infrastructure.primary.response.AnimalResponse;
-import org.apache.tomcat.jni.Local;
+import com.example.jeezoo.space.domain.SpaceId;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public final class DefaultAnimalService implements AnimalService {
 
@@ -50,8 +45,11 @@ public final class DefaultAnimalService implements AnimalService {
   public ExternalAnimalRequest[] getStarters(){
     String url = "https://zoo-animal-api.herokuapp.com/animals/rand/3";
     RestTemplate restTemplate = new RestTemplate();
-    ExternalAnimalRequest[] externalAnimalRequests = restTemplate
-            .getForObject(url, ExternalAnimalRequest[].class);
-    return externalAnimalRequests;
+    return restTemplate.getForObject(url, ExternalAnimalRequest[].class);
+  }
+
+  @Override
+  public Long killNumber(List<SpaceId> spaceIdList) {
+    return animals.countBySpaceIdInAndStatus(spaceIdList, AnimalStatus.Dead);
   }
 }

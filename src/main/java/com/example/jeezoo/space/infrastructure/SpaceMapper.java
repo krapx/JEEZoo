@@ -19,7 +19,7 @@ public final class SpaceMapper {
 
     public Space toModel(SpaceEntity spaceEntity) {
         return Space.of(
-            new SpaceId(spaceEntity.getId()),
+            SpaceId.of(spaceEntity.getId()),
             spaceEntity.getName(),
             SpaceStatus.valueOf(spaceEntity.getStatus()),
             ZooId.of(spaceEntity.getZooId())
