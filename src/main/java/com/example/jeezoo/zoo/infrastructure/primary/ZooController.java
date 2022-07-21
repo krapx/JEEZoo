@@ -14,6 +14,7 @@ import com.example.jeezoo.player.domain.model.PlayerId;
 import com.example.jeezoo.playerAnimal.domain.PlayerAnimal;
 import com.example.jeezoo.playerAnimal.domain.PlayerAnimalService;
 import com.example.jeezoo.playerAnimal.infrastructure.primary.PlayerAnimalResponse;
+import com.example.jeezoo.space.exposition.response.SpaceResponse;
 import com.example.jeezoo.zoo.application.command.AddZooCommand;
 import com.example.jeezoo.zoo.application.command.DeleteZooCommand;
 import com.example.jeezoo.zoo.application.command.UpdateZooCommand;
@@ -161,7 +162,7 @@ public class ZooController {
     public ResponseEntity<ZooGameDetailsResponse> getZooGameDetailsById(@PathVariable Long zooId) {
         Zoo zoo = queryBus.send(new RetrieveZooById(zooId));
 
-        UserAnimal userAnimal = userAnimalService.findByUserId(zoo.getUserId());
+        PlayerAnimal playerAnimal = playerAnimalService.findByPlayerId(zoo.getPlayerId());
         List<Space> zooSpaces = spaces.findAllByZooId(zoo.getId());
         List<SpaceId> zooSpaceIds = zooSpaces.stream().map(Space::getId).toList();
         List<Animal> zooAnimalsHistory = animals.findAllBySpaceIdInAndStatus(zooSpaceIds, AnimalStatus.Dead);
@@ -170,7 +171,7 @@ public class ZooController {
         return ResponseEntity.ok(ZooGameDetailsResponse.from(
             zoo,
             zooKillNumber,
-            UserAnimalResponse.fromUserAnimal(userAnimal),
+            PlayerAnimalResponse.fromPlayerAnimal(playerAnimal),
             zooAnimalsHistory.stream().map(AnimalResponse::fromAnimal).toList(),
             zooSpaces.stream().map(SpaceResponse::fromSpace).toList()
         ));

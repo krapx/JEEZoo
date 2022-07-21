@@ -26,10 +26,10 @@ public class ZooGameDetailsResponse {
 
     public static ZooGameDetailsResponse from(
         Zoo zoo, Long killNumber,
-        List<SpaceResponse> spaces
         PlayerAnimalResponse playerAnimalResponse,
-        List<AnimalResponse> animalsHistory
-    ) {
+        List<AnimalResponse> animalsHistory,
+        List<SpaceResponse> spaces
+        ) {
         return new ZooGameDetailsResponse(
             zoo.getId().getValue(),
             zoo.getName(),
@@ -38,9 +38,9 @@ public class ZooGameDetailsResponse {
             zoo.getUpdatedAt(),
             zoo.getPlayerId().getValue(),
             killNumber,
+            playerAnimalResponse,
             animalsHistory,
             spaces
-                playerAnimalResponse,
         );
     }
 }
