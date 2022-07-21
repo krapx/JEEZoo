@@ -94,6 +94,14 @@ public class ZooController {
 
         // 1 CREATE ZOO
         ZooId zooId = zooService.addZoo("zoo_1", ZooStatus.IN_PROGRESS, PlayerId.of(generateZooGame.playerId()));
+        playerAnimalService.create(
+            PlayerAnimal.create(
+                generateZooGame.playerAnimal().name(),
+                generateZooGame.playerAnimal().image(),
+                PlayerId.of(generateZooGame.playerId()),
+                zooId
+            )
+        );
 
         generateZooGame.spaces().forEach(space -> {
 
