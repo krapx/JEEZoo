@@ -5,6 +5,7 @@ import com.example.jeezoo.player.domain.model.Player;
 import com.example.jeezoo.player.domain.model.PlayerId;
 import com.example.jeezoo.player.domain.model.PlayerRole;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,9 +19,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class PlayerController {
 
     private final PlayerRepository playerRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public PlayerController(PlayerRepository playerRepository) {
+    public PlayerController(PlayerRepository playerRepository, PasswordEncoder passwordEncoder) {
         this.playerRepository = playerRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -32,7 +35,7 @@ public class PlayerController {
     public ResponseEntity<PlayerId> createPlayer(@Valid @RequestBody CreatePlayerRequest createPlayerRequest) {
         Player playerToAdd = Player.create(
             createPlayerRequest.username(),
-            createPlayerRequest.password(),
+            passwordEncoder.encode(createPlayerRequest.password()),
             createPlayerRequest.email(),
             PlayerRole.PLAYER
         );
