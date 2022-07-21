@@ -12,23 +12,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/api/login")
 public class AuthController {
 
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManager;
 
-    public AuthController(TokenProvider tokenProvider,
-                                    AuthenticationManagerBuilder authenticationManager) {
+    public AuthController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManager) {
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
     }
 
     @PostMapping
-    public ResponseEntity login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity login(@RequestBody @Valid LoginDto loginDto) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
 
         Authentication authentication = authenticationManager.getObject().authenticate(authenticationToken);
@@ -38,5 +39,6 @@ public class AuthController {
         httpHeaders.add(AUTHORIZATION, "Bearer " + token);
 
         return new ResponseEntity<>(httpHeaders, HttpStatus.OK);
+//        return ResponseEntity.ok(token);
     }
 }

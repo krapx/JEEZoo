@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 public record PlayerResponse(
     Long id,
     String username,
-    String role,
     String mail,
+    String role,
     LocalDateTime creationAt,
     LocalDateTime updatedAt
 ) {
