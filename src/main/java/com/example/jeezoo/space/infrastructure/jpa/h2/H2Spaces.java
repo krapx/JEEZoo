@@ -62,4 +62,9 @@ public class H2Spaces implements Spaces {
     public Long countByZooIdAndStatus(ZooId zooId, SpaceStatus status) {
         return jpaSpaceRepository.countByZooIdAndStatus(zooId.getValue(), status.name());
     }
+
+    @Override
+    public Long countByZooId(ZooId zooId) {
+        return jpaSpaceRepository.countByZooId(zooId.getValue());
+    }
 }

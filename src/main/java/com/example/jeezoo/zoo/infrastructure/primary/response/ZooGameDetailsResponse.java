@@ -2,6 +2,7 @@ package com.example.jeezoo.zoo.infrastructure.primary.response;
 
 import com.example.jeezoo.animal.domain.Animal;
 import com.example.jeezoo.animal.infrastructure.primary.response.AnimalResponse;
+import com.example.jeezoo.space.exposition.response.SpaceResponse;
 import com.example.jeezoo.userAnimal.infrastructure.primary.UserAnimalResponse;
 import com.example.jeezoo.zoo.domain.Zoo;
 import lombok.Data;
@@ -21,13 +22,14 @@ public class ZooGameDetailsResponse {
 
     private final Long killNumber;
     private final UserAnimalResponse userAnimal;
-
     private final List<AnimalResponse> animalsHistory;
+    private final List<SpaceResponse> spaces;
 
     public static ZooGameDetailsResponse from(
         Zoo zoo, Long killNumber,
         UserAnimalResponse userAnimalResponse,
-        List<AnimalResponse> animalsHistory
+        List<AnimalResponse> animalsHistory,
+        List<SpaceResponse> spaces
     ) {
         return new ZooGameDetailsResponse(
             zoo.getId().getValue(),
@@ -38,7 +40,8 @@ public class ZooGameDetailsResponse {
             zoo.getUserId().getValue(),
             killNumber,
             userAnimalResponse,
-            animalsHistory
+            animalsHistory,
+            spaces
         );
     }
 }

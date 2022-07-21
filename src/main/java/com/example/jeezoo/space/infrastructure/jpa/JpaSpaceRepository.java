@@ -11,4 +11,5 @@ public interface JpaSpaceRepository extends JpaRepository<SpaceEntity, Long> {
 
     List<SpaceEntity> findAllByZooId(Long zooId);
     Long countByZooIdAndStatus(Long zooId, String status);
+    Long countByZooId(Long zooId);
 }

@@ -1,5 +1,6 @@
 package com.example.jeezoo.zoo.infrastructure.primary;
 
+import com.example.jeezoo.animal.domain.Animal;
 import com.example.jeezoo.animal.domain.AnimalService;
 import com.example.jeezoo.animal.domain.AnimalStatus;
 import com.example.jeezoo.animal.domain.Animals;
@@ -9,6 +10,7 @@ import com.example.jeezoo.kernel.cqs.CommandBus;
 import com.example.jeezoo.kernel.cqs.QueryBus;
 import com.example.jeezoo.kernel.exceptions.BadRequestException;
 import com.example.jeezoo.space.domain.*;
+import com.example.jeezoo.space.exposition.response.SpaceResponse;
 import com.example.jeezoo.user.domain.model.UserId;
 import com.example.jeezoo.userAnimal.domain.UserAnimal;
 import com.example.jeezoo.userAnimal.domain.UserAnimalService;
@@ -159,21 +161,19 @@ public class ZooController {
     @GetMapping("{zooId}/game-details")
     public ResponseEntity<ZooGameDetailsResponse> getZooGameDetailsById(@PathVariable Long zooId) {
         Zoo zoo = queryBus.send(new RetrieveZooById(zooId));
-        System.out.println(zoo);
+
         UserAnimal userAnimal = userAnimalService.findByUserId(zoo.getUserId());
-        List<SpaceId> spaceIds = spaces.findAllByZooId(zoo.getId()).stream().map(Space::getId).toList();
-        List<AnimalResponse> animalsHistory = animals
-            .findAllBySpaceIdInAndStatus(spaceIds, AnimalStatus.Dead)
-            .stream()
-            .map(AnimalResponse::fromAnimal)
-            .toList();
-        Long killNumber = animalService.killNumber(spaceIds);
+        List<Space> zooSpaces = spaces.findAllByZooId(zoo.getId());
+        List<SpaceId> zooSpaceIds = zooSpaces.stream().map(Space::getId).toList();
+        List<Animal> zooAnimalsHistory = animals.findAllBySpaceIdInAndStatus(zooSpaceIds, AnimalStatus.Dead);
+        Long zooKillNumber = animalService.killNumber(zooSpaceIds);
 
         return ResponseEntity.ok(ZooGameDetailsResponse.from(
             zoo,
-            killNumber,
+            zooKillNumber,
             UserAnimalResponse.fromUserAnimal(userAnimal),
-            animalsHistory
+            zooAnimalsHistory.stream().map(AnimalResponse::fromAnimal).toList(),
+            zooSpaces.stream().map(SpaceResponse::fromSpace).toList()
         ));
     }
 
