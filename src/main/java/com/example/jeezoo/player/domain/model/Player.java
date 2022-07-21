@@ -1,10 +1,12 @@
 package com.example.jeezoo.player.domain.model;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 
 @Data(staticConstructor = "of")
+@Accessors(chain = true)
 public class Player {
 
     private final PlayerId id;
@@ -31,4 +33,6 @@ public class Player {
             LocalDateTime.now()
         );
     }
+
+
 }

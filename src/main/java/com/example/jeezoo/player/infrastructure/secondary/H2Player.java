@@ -49,4 +49,13 @@ public class H2Player implements PlayerRepository {
         else
             throw new NoResultException("Player not found, id = " + playerId.getValue());
     }
+
+    @Override
+    public Optional<Player> findByUsername(String username) {
+        Optional<Player> user = jpaPlayer.findByUsername(username).map(playerAdapter::toModel);
+        if (user.isPresent())
+            return user;
+        else
+            throw new NoResultException("User not found, username = " + user);
+    }
 }
