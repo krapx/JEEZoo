@@ -1,5 +1,5 @@
 INSERT INTO players (id, username, password, mail, role, creation_at, updated_at)
-VALUES (900L, 'player', 'pouetpouet', 'admin@gmail.com', 'PLAYER', '2022-07-18', '2022-07-18');
+VALUES (900L, 'player', 'pouetpouet', 'admin@gmail.com', 'USER', '2022-07-18', '2022-07-18');
 
 INSERT INTO zoos (id, name, zoo_status, created_at, updated_at, player_id)
 VALUES (1000L, 'zoo1', 'IN_PROGRESS', '2022-07-18', '2022-07-18', 900L);
