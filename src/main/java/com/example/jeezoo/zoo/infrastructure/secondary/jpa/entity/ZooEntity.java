@@ -20,7 +20,7 @@ public class ZooEntity {
     private String zooStatus;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Long userId;
+    private Long playerId;
 
     public ZooEntity() {
     }

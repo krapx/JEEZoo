@@ -12,7 +12,7 @@ public class ZooResponse {
     private final String zooStatus;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
-    private final Long userId;
+    private final Long playerId;
 
     public static ZooResponse fromZoo(Zoo zoo) {
         return new ZooResponse(
@@ -21,7 +21,7 @@ public class ZooResponse {
             zoo.getZooStatus().name(),
             zoo.getCreatedAt(),
             zoo.getUpdatedAt(),
-            zoo.getUserId().getValue()
+            zoo.getPlayerId().getValue()
         );
     }
 }

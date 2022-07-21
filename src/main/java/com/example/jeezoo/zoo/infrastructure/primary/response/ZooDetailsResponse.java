@@ -1,6 +1,6 @@
 package com.example.jeezoo.zoo.infrastructure.primary.response;
 
-import com.example.jeezoo.userAnimal.infrastructure.primary.UserAnimalResponse;
+import com.example.jeezoo.playerAnimal.infrastructure.primary.PlayerAnimalResponse;
 import com.example.jeezoo.zoo.domain.Zoo;
 import lombok.Data;
 
@@ -14,15 +14,15 @@ public class ZooDetailsResponse {
     private final String zooStatus;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
-    private final Long userId;
+    private final Long playerId;
 
     private final Long killNumber;
     private final Long completedSpacesNumber;
-    private final UserAnimalResponse userAnimal;
+    private final PlayerAnimalResponse playerAnimal;
 
     public static ZooDetailsResponse fromZoo(
         Zoo zoo, Long killNumber, Long completedSpacesNumber,
-        UserAnimalResponse userAnimalResponse
+        PlayerAnimalResponse playerAnimalResponse
     ) {
         return new ZooDetailsResponse(
             zoo.getId().getValue(),
@@ -30,10 +30,10 @@ public class ZooDetailsResponse {
             zoo.getZooStatus().name(),
             zoo.getCreatedAt(),
             zoo.getUpdatedAt(),
-            zoo.getUserId().getValue(),
+            zoo.getPlayerId().getValue(),
             killNumber,
             completedSpacesNumber,
-            userAnimalResponse
+                playerAnimalResponse
         );
     }
 }

@@ -1,11 +1,7 @@
 package com.example.jeezoo.zoo.domain;
 
-import com.example.jeezoo.kernel.annotations.AggregateRoot;
-import com.example.jeezoo.user.domain.model.UserId;
-import lombok.AllArgsConstructor;
+import com.example.jeezoo.player.domain.model.PlayerId;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
 
 import java.time.LocalDateTime;
 
@@ -17,16 +13,16 @@ public class Zoo {
     private final ZooStatus zooStatus;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
-    private final UserId userId;
+    private final PlayerId playerId;
 
-    public static Zoo createZoo(String name, ZooStatus zooStatus, UserId userId) {
+    public static Zoo createZoo(String name, ZooStatus zooStatus, PlayerId playerId) {
         return new Zoo(
             ZooId.notCreatedYet(),
             name,
             zooStatus,
             LocalDateTime.now(),
             LocalDateTime.now(),
-            userId
+                playerId
         );
     }
 }
