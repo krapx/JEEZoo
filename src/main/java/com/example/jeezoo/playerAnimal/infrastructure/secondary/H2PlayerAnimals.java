@@ -4,6 +4,7 @@ import com.example.jeezoo.player.domain.model.PlayerId;
 import com.example.jeezoo.playerAnimal.domain.PlayerAnimal;
 import com.example.jeezoo.playerAnimal.domain.PlayerAnimalId;
 import com.example.jeezoo.playerAnimal.domain.PlayerAnimals;
+import com.example.jeezoo.zoo.domain.ZooId;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -39,6 +40,12 @@ public class H2PlayerAnimals implements PlayerAnimals {
     public Optional<PlayerAnimal> findByPlayerId(PlayerId playerId) {
         logger.info(format("[H2PlayerAnimals] findByPlayerId %d", playerId.getValue()));
         return jpaPlayerAnimals.findByPlayerId(playerId.getValue()).map(playerAnimalMapper::toModel);
+    }
+
+    @Override
+    public List<PlayerAnimal> findAllByZooId(ZooId zooId) {
+        logger.info(format("[H2PlayerAnimals] findAllByZooId %d", zooId.getValue()));
+        return jpaPlayerAnimals.findAllByZooId(zooId.getValue()).stream().map(playerAnimalMapper::toModel).toList();
     }
 
     @Override
