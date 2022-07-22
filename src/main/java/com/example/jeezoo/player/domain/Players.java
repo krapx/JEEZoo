@@ -6,7 +6,7 @@ import com.example.jeezoo.player.domain.model.PlayerId;
 import java.util.List;
 import java.util.Optional;
 
-public interface PlayerRepository {
+public interface Players {
 
   PlayerId add(Player player);
 
@@ -17,4 +17,6 @@ public interface PlayerRepository {
   Player findById(PlayerId playerId);
 
   Optional<Player> findByUsername(String username);
+
+  Boolean existsByUsername(String username);
 }

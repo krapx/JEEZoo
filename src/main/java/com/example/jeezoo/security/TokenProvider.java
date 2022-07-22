@@ -28,33 +28,34 @@ public class TokenProvider {
         this.secret = secret.toString().getBytes();
     }
 
-    public String createToken(Authentication authentication) {
+    public String createToken(Authentication authentication, Long playerId) {
         String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.joining(","));
 
         long now = (new Date()).getTime();
         Date validity = new Date(now + this.tokenValidityInMilliseconds);
 
         return Jwts.builder()
-                .setSubject(authentication.getName())
-                .claim(AUTHORITIES_KEY, authorities)
-                .signWith(SignatureAlgorithm.HS512, secret)
-                .setExpiration(validity)
-                .compact();
+            .setSubject(authentication.getName())
+            .claim(AUTHORITIES_KEY, authorities)
+            .claim("player_id", playerId)
+            .signWith(SignatureAlgorithm.HS512, secret)
+            .setExpiration(validity)
+            .compact();
     }
 
     public Authentication getAuthentication(String token) {
         Claims claims = parseToken(token).getBody();
 
         Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
+            Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
 
         User principal = new User(claims.getSubject(), "", authorities);
 
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+        return new UsernamePasswordAuthenticationToken(claims, token, authorities);
     }
 
     public boolean validateToken(String authToken) {
@@ -62,7 +63,8 @@ public class TokenProvider {
             parseToken(authToken);
             return true;
 
-        } catch (JwtException | IllegalArgumentException e) {
+        }
+        catch (JwtException | IllegalArgumentException e) {
             log.info("Invalid JWT token.");
             return false;
         }
@@ -70,7 +72,7 @@ public class TokenProvider {
 
     private Jws<Claims> parseToken(String authToken) {
         return Jwts.parser()
-                .setSigningKey(secret)
-                .parseClaimsJws(authToken);
+            .setSigningKey(secret)
+            .parseClaimsJws(authToken);
     }
 }

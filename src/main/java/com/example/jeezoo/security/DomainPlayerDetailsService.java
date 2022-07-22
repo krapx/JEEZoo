@@ -1,6 +1,6 @@
 package com.example.jeezoo.security;
 
-import com.example.jeezoo.player.domain.PlayerRepository;
+import com.example.jeezoo.player.domain.Players;
 import com.example.jeezoo.player.domain.model.Player;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.userdetails.User;
@@ -14,15 +14,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class DomainPlayerDetailsService implements UserDetailsService {
 
-    private final PlayerRepository playerRepository;
+    private final Players players;
 
-    public DomainPlayerDetailsService(PlayerRepository playerRepository) {
-        this.playerRepository = playerRepository;
+    public DomainPlayerDetailsService(Players players) {
+        this.players = players;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Player appUser = playerRepository.findByUsername(username)
+        Player appUser = players.findByUsername(username)
                 .orElseThrow(() -> new AuthenticationServiceException("username " + username + " not found"));
 
         return User.builder()

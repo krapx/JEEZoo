@@ -1,6 +1,6 @@
 package com.example.jeezoo.player.infrastructure.secondary;
 
-import com.example.jeezoo.player.domain.PlayerRepository;
+import com.example.jeezoo.player.domain.Players;
 import com.example.jeezoo.player.domain.model.Player;
 import com.example.jeezoo.player.domain.model.PlayerId;
 import org.springframework.stereotype.Repository;
@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 import static java.lang.String.format;
 
 @Repository
-public class H2Player implements PlayerRepository {
+public class H2Player implements Players {
 
     private final Logger logger = Logger.getLogger(H2Player.class.getName());
     private final JpaPlayer jpaPlayer;
@@ -57,5 +57,10 @@ public class H2Player implements PlayerRepository {
             return user;
         else
             throw new NoResultException("User not found, username = " + user);
+    }
+
+    @Override
+    public Boolean existsByUsername(String username) {
+        return jpaPlayer.existsByUsername(username);
     }
 }

@@ -27,11 +27,18 @@ import com.example.jeezoo.zoo.infrastructure.primary.request.UpdateZooRequest;
 import com.example.jeezoo.zoo.infrastructure.primary.response.ZooDetailsResponse;
 import com.example.jeezoo.zoo.infrastructure.primary.response.ZooGameDetailsResponse;
 import com.example.jeezoo.zoo.infrastructure.primary.response.ZooResponse;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwt;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -88,17 +95,20 @@ public class ZooController {
     }
 
     @PostMapping("generate")
-    public ResponseEntity<GenerateZooGameRequest> generateZooGame(
-        @RequestBody @Valid GenerateZooGameRequest generateZooGame
+    public ResponseEntity<Long> generateZooGame(
+        @RequestBody @Valid GenerateZooGameRequest generateZooGame,
+        Authentication authentication
     ) {
+        Claims principal = (Claims) authentication.getPrincipal();
+        PlayerId playerId = PlayerId.of(Long.parseLong(principal.get("player_id").toString()));
 
         // 1 CREATE ZOO
-        ZooId zooId = zooService.addZoo("zoo_1", ZooStatus.IN_PROGRESS, PlayerId.of(generateZooGame.playerId()));
+        ZooId zooId = zooService.addZoo("zoo_1", ZooStatus.IN_PROGRESS, playerId);
         playerAnimalService.create(
             PlayerAnimal.create(
                 generateZooGame.playerAnimal().name(),
                 generateZooGame.playerAnimal().image(),
-                PlayerId.of(generateZooGame.playerId()),
+                playerId,
                 zooId
             )
         );
@@ -128,7 +138,7 @@ public class ZooController {
                 }, () -> new BadRequestException(""));
         });
 
-        return ResponseEntity.ok(generateZooGame);
+        return ResponseEntity.ok(zooId.getValue());
     }
 
     @GetMapping

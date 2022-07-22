@@ -8,8 +8,6 @@ import java.util.List;
 
 public record GenerateZooGameRequest(
     @NotNull
-    Long playerId,
-    @NotNull
     CreatePlayerAnimalPartiallyRequest playerAnimal,
     @NotNull
     List<GenerateSpaceRequest> spaces
