@@ -32,20 +32,17 @@ public class AuthController {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManager;
     private final PasswordEncoder passwordEncoder;
-    private final Players players;
     private final PlayerService playerService;
 
     public AuthController(
         TokenProvider tokenProvider,
         AuthenticationManagerBuilder authenticationManager,
         PasswordEncoder passwordEncoder,
-        Players players,
         PlayerService playerService
     ) {
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
-        this.players = players;
         this.playerService = playerService;
     }
 
