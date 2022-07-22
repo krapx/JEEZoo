@@ -2,6 +2,7 @@ package com.example.jeezoo.playerAnimal.domain;
 
 import com.example.jeezoo.player.domain.model.PlayerId;
 import com.example.jeezoo.playerAnimal.domain.exception.PlayerAnimalNotFoundException;
+import com.example.jeezoo.zoo.domain.ZooId;
 import com.example.jeezoo.zoo.domain.ZooService;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,11 @@ public class PlayerAnimalService {
     public PlayerAnimal findByPlayerId(PlayerId playerId) {
         // Validation UserId
         return playerAnimals.findByPlayerId(playerId).orElseThrow(() -> new PlayerAnimalNotFoundException(playerId));
+    }
+
+    public PlayerAnimal findAllByZooId(ZooId zooId) {
+        // Validation UserId
+        return playerAnimals.findAllByZooId(zooId).orElseThrow(() -> new PlayerAnimalNotFoundException(zooId));
     }
 
     public PlayerAnimal findById(PlayerAnimalId playerAnimalId) {
