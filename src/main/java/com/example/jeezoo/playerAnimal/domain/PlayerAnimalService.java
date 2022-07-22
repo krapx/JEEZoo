@@ -22,11 +22,6 @@ public class PlayerAnimalService {
         return playerAnimals.findByPlayerId(playerId).orElseThrow(() -> new PlayerAnimalNotFoundException(playerId));
     }
 
-    public PlayerAnimal findAllByZooId(ZooId zooId) {
-        // Validation UserId
-        return playerAnimals.findAllByZooId(zooId).orElseThrow(() -> new PlayerAnimalNotFoundException(zooId));
-    }
-
     public PlayerAnimal findById(PlayerAnimalId playerAnimalId) {
         return playerAnimals.findById(playerAnimalId).orElseThrow(() -> new PlayerAnimalNotFoundException(playerAnimalId));
     }

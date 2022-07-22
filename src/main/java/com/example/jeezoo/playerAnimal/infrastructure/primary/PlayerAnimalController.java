@@ -47,9 +47,9 @@ public class PlayerAnimalController {
     }
 
     @GetMapping("zooId/{zooId}")
-    public ResponseEntity<PlayerAnimalResponse> getAllByZooId(@PathVariable Long zooId) {
-        PlayerAnimal playerAnimal = playerAnimalService.findAllByZooId(ZooId.of(zooId));
-        return ResponseEntity.ok(PlayerAnimalResponse.fromPlayerAnimal(playerAnimal));
+    public List<PlayerAnimalResponse> getAllByZooId(@PathVariable Long zooId) {
+        List<PlayerAnimal> playerAnimal = playerAnimalRepository.findAllByZooId(ZooId.of(zooId));
+        return playerAnimal.stream().map(PlayerAnimalResponse::fromPlayerAnimal).toList();
     }
 
     @PostMapping

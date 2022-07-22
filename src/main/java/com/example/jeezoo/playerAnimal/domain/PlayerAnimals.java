@@ -10,6 +10,6 @@ public interface PlayerAnimals {
     List<PlayerAnimal> findAll();
     Optional<PlayerAnimal> findById(PlayerAnimalId playerAnimalId);
     Optional<PlayerAnimal> findByPlayerId(PlayerId playerId);
-    Optional<PlayerAnimal> findAllByZooId(ZooId zooId);
+    List<PlayerAnimal> findAllByZooId(ZooId zooId);
     PlayerAnimalId save(PlayerAnimal playerAnimal);
 }

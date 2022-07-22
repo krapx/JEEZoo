@@ -24,7 +24,6 @@ public class PlayerController {
         return playerRepository.findAll().stream().map(PlayerResponse::fromPlayer).toList();
     }
 
-
     @GetMapping("{id}")
     public ResponseEntity<PlayerResponse> getPlayerById(@PathVariable Long playerId) {
         Player player = playerRepository.findById(PlayerId.of(playerId));
