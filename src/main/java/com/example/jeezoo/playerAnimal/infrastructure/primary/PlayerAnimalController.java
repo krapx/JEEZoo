@@ -3,7 +3,9 @@ package com.example.jeezoo.playerAnimal.infrastructure.primary;
 import com.example.jeezoo.player.domain.model.PlayerId;
 import com.example.jeezoo.playerAnimal.domain.*;
 import com.example.jeezoo.zoo.domain.ZooId;
+import io.jsonwebtoken.Claims;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -40,9 +42,12 @@ public class PlayerAnimalController {
         return ResponseEntity.ok(PlayerAnimalResponse.fromPlayerAnimal(playerAnimal));
     }
 
-    @GetMapping("playerId/{playerId}")
-    public ResponseEntity<PlayerAnimalResponse> getByPlayerId(@PathVariable Long playerId) {
-        PlayerAnimal playerAnimal = playerAnimalService.findByPlayerId(PlayerId.of(playerId));
+    @GetMapping("playerId")
+    public ResponseEntity<PlayerAnimalResponse> getByPlayerId(Authentication authentication) {
+        Claims principal = (Claims) authentication.getPrincipal();
+        PlayerId playerId = PlayerId.of(Long.parseLong(principal.get("player_id").toString()));
+
+        PlayerAnimal playerAnimal = playerAnimalService.findByPlayerId(playerId);
         return ResponseEntity.ok(PlayerAnimalResponse.fromPlayerAnimal(playerAnimal));
     }
 

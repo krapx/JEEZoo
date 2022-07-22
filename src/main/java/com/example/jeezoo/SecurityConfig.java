@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity(debug = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     private final TokenProvider tokenProvider;
 
     public SecurityConfig(TokenProvider tokenProvider) {
@@ -24,19 +25,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .sessionManagement()
+            .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .csrf().disable()
-                .authorizeRequests()
+            .csrf().disable()
+            .cors()
+            .and()
+            .authorizeRequests()
                 .antMatchers("/login", "/register").permitAll()
-                .antMatchers("/api/**").permitAll()
-//                .antMatchers("/api/**").hasRole("USER")
-//                .antMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest()
+                .antMatchers("/api/**").hasRole("USER")
+                .antMatchers("/admin/**").hasRole("ADMIN")
+            .anyRequest()
                 .authenticated()
                 .and()
-                .addFilterBefore(new JWTFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(new JWTFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean

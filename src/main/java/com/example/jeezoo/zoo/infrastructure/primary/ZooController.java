@@ -147,15 +147,21 @@ public class ZooController {
         return zoos.stream().map(ZooResponse::fromZoo).collect(Collectors.toList());
     }
 
-    @GetMapping("/playerId/{playerId}")
-    public List<ZooResponse> getAllZoosByPlayerId(@PathVariable Long playerId) {
-        List<Zoo> zoosAllByPlayerId = zoos.findAllByPlayerId(PlayerId.of(playerId));
+    @GetMapping("/playerId/")
+    public List<ZooResponse> getAllZoosByPlayerId(Authentication authentication) {
+        Claims principal = (Claims) authentication.getPrincipal();
+        PlayerId playerId = PlayerId.of(Long.parseLong(principal.get("player_id").toString()));
+
+        List<Zoo> zoosAllByPlayerId = zoos.findAllByPlayerId(playerId);
         return zoosAllByPlayerId.stream().map(ZooResponse::fromZoo).collect(Collectors.toList());
     }
 
-    @GetMapping("/playerId/{playerId}/details")
-    public List<ZooDetailsResponse> getAllZooDetailsByPlayerId(@PathVariable Long playerId) {
-        List<Zoo> zoosAllByPlayerId = zoos.findAllByPlayerId(PlayerId.of(playerId));
+    @GetMapping("/playerId/details")
+    public List<ZooDetailsResponse> getAllZooDetailsByPlayerId(Authentication authentication) {
+        Claims principal = (Claims) authentication.getPrincipal();
+        PlayerId playerId = PlayerId.of(Long.parseLong(principal.get("player_id").toString()));
+
+        List<Zoo> zoosAllByPlayerId = zoos.findAllByPlayerId(playerId);
         return zoosAllByPlayerId.stream().map(zoo -> {
             PlayerAnimal playerAnimal = playerAnimalService.findByPlayerId(zoo.getPlayerId());
             Long completedSpaceNumber = spaces.countByZooIdAndStatus(zoo.getId(), SpaceStatus.COMPLETED);
