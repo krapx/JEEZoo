@@ -46,6 +46,12 @@ public class PlayerAnimalController {
         return ResponseEntity.ok(PlayerAnimalResponse.fromPlayerAnimal(playerAnimal));
     }
 
+    @GetMapping("zooId/{zooId}")
+    public List<PlayerAnimalResponse> getAllByZooId(@PathVariable Long zooId) {
+        List<PlayerAnimal> playerAnimal = playerAnimalRepository.findAllByZooId(ZooId.of(zooId));
+        return playerAnimal.stream().map(PlayerAnimalResponse::fromPlayerAnimal).toList();
+    }
+
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody CreatePlayerAnimalRequest request) {
         PlayerAnimalId playerAnimalId = playerAnimalService.create(
