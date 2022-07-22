@@ -50,7 +50,8 @@ public class AuthController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(AUTHORIZATION, "Bearer " + token);
 
-        return new ResponseEntity<>(httpHeaders, HttpStatus.OK);
+//        return new ResponseEntity<>(httpHeaders, HttpStatus.OK);
+        return ResponseEntity.ok(token);
     }
 
     @PostMapping("/register")
