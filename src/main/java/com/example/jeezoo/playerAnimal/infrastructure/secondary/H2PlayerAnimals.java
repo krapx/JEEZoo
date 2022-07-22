@@ -43,6 +43,20 @@ public class H2PlayerAnimals implements PlayerAnimals {
     }
 
     @Override
+    public List<PlayerAnimal> findAllByPlayerIdAndZooId(PlayerId playerId, ZooId zooId) {
+        logger.info(format(
+            "[H2PlayerAnimals] findByPlayerIdAndZooId {playerId: %d, zooId:%d}",
+            playerId.getValue(),
+            zooId.getValue()
+        ));
+        return jpaPlayerAnimals
+            .findAllByPlayerIdAndZooId(playerId.getValue(), zooId.getValue())
+            .stream()
+            .map(playerAnimalMapper::toModel)
+            .toList();
+    }
+
+    @Override
     public List<PlayerAnimal> findAllByZooId(ZooId zooId) {
         logger.info(format("[H2PlayerAnimals] findAllByZooId %d", zooId.getValue()));
         return jpaPlayerAnimals.findAllByZooId(zooId.getValue()).stream().map(playerAnimalMapper::toModel).toList();

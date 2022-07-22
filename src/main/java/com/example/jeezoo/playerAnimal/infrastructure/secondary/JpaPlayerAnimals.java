@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface JpaPlayerAnimals extends JpaRepository<PlayerAnimalEntity, Long> {
     Optional<PlayerAnimalEntity> findByPlayerId(Long playerId);
     List<PlayerAnimalEntity> findAllByZooId(Long zooId);
+    List<PlayerAnimalEntity> findAllByPlayerIdAndZooId(Long playerId, Long zooId);
 }

@@ -20,13 +20,13 @@ public class ZooGameDetailsResponse {
     private final Long playerId;
 
     private final Long killNumber;
-    private final PlayerAnimalResponse playerAnimal;
+    private final List<PlayerAnimalResponse> playerAnimals;
     private final List<AnimalResponse> animalsHistory;
     private final List<SpaceResponse> spaces;
 
     public static ZooGameDetailsResponse from(
         Zoo zoo, Long killNumber,
-        PlayerAnimalResponse playerAnimalResponse,
+        List<PlayerAnimalResponse> playerAnimalResponseList,
         List<AnimalResponse> animalsHistory,
         List<SpaceResponse> spaces
         ) {
@@ -38,7 +38,7 @@ public class ZooGameDetailsResponse {
             zoo.getUpdatedAt(),
             zoo.getPlayerId().getValue(),
             killNumber,
-            playerAnimalResponse,
+            playerAnimalResponseList,
             animalsHistory,
             spaces
         );
