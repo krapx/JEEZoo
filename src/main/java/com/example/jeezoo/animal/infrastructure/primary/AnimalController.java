@@ -91,6 +91,7 @@ public class AnimalController {
     public ResponseEntity<?> updateAnimalById(
         @RequestBody @Valid UpdateAnimalRequest updateAnimalRequest, @PathVariable Long animalId
     ) {
+        Animal animal = animalService.getById(animalId);
         var updateAnimalById = new UpdateAnimalCommand(
             animalId,
             updateAnimalRequest.getName(),
@@ -100,6 +101,23 @@ public class AnimalController {
             updateAnimalRequest.getWeightMax(),
             updateAnimalRequest.getImageLink(),
             updateAnimalRequest.getSpaceId()
+        );
+        commandBus.send(updateAnimalById);
+        return ResponseEntity.accepted().build();
+    }
+
+    @PutMapping("{animalId}/status/{status}")
+    public ResponseEntity<?> updateAnimalById(@PathVariable Long animalId, @PathVariable String status) {
+        Animal animal = animalService.getById(animalId);
+        var updateAnimalById = new UpdateAnimalCommand(
+            animalId,
+            animal.getName(),
+            animal.getType(),
+            status,
+            animal.getLengthMax(),
+            animal.getWeightMax(),
+            animal.getImageLink(),
+            animal.getSpaceId()
         );
         commandBus.send(updateAnimalById);
         return ResponseEntity.accepted().build();

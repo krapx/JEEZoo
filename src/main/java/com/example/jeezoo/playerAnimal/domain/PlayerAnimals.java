@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface PlayerAnimals {
     List<PlayerAnimal> findAll();
     Optional<PlayerAnimal> findById(PlayerAnimalId playerAnimalId);
-    Optional<PlayerAnimal> findByPlayerId(PlayerId playerId);
+    Optional<PlayerAnimal> findFirstByZooId(ZooId zooId);
     List<PlayerAnimal> findAllByPlayerIdAndZooId(PlayerId playerId, ZooId zooId);
     List<PlayerAnimal> findAllByZooId(ZooId zooId);
     PlayerAnimalId save(PlayerAnimal playerAnimal);

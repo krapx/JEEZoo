@@ -166,7 +166,7 @@ public class ZooController {
 
         List<Zoo> zoosAllByPlayerId = zoos.findAllByPlayerId(playerId);
         return zoosAllByPlayerId.stream().map(zoo -> {
-            PlayerAnimal playerAnimal = playerAnimalService.findByPlayerId(zoo.getPlayerId());
+            PlayerAnimal playerAnimal = playerAnimalService.findFirstByZooId(zoo.getId());
             Long completedSpaceNumber = spaces.countByZooIdAndStatus(zoo.getId(), SpaceStatus.COMPLETED);
             List<SpaceId> spaceIds = spaces.findAllByZooId(zoo.getId()).stream().map(Space::getId).toList();
             Long killNumber = animalService.killNumber(spaceIds);

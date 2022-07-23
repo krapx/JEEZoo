@@ -1,6 +1,5 @@
 package com.example.jeezoo.playerAnimal.domain;
 
-import com.example.jeezoo.player.domain.model.PlayerId;
 import com.example.jeezoo.playerAnimal.domain.exception.PlayerAnimalNotFoundException;
 import com.example.jeezoo.zoo.domain.ZooId;
 import com.example.jeezoo.zoo.domain.ZooService;
@@ -17,9 +16,9 @@ public class PlayerAnimalService {
         this.zooService = zooService;
     }
 
-    public PlayerAnimal findByPlayerId(PlayerId playerId) {
+    public PlayerAnimal findFirstByZooId(ZooId zooId) {
         // Validation UserId
-        return playerAnimals.findByPlayerId(playerId).orElseThrow(() -> new PlayerAnimalNotFoundException(playerId));
+        return playerAnimals.findFirstByZooId(zooId).orElseThrow(() -> new PlayerAnimalNotFoundException(zooId));
     }
 
     public PlayerAnimal findById(PlayerAnimalId playerAnimalId) {

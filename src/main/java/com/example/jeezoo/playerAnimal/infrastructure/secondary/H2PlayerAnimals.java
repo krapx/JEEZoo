@@ -37,9 +37,9 @@ public class H2PlayerAnimals implements PlayerAnimals {
     }
 
     @Override
-    public Optional<PlayerAnimal> findByPlayerId(PlayerId playerId) {
-        logger.info(format("[H2PlayerAnimals] findByPlayerId %d", playerId.getValue()));
-        return jpaPlayerAnimals.findByPlayerId(playerId.getValue()).map(playerAnimalMapper::toModel);
+    public Optional<PlayerAnimal> findFirstByZooId(ZooId zooId) {
+        logger.info(format("[H2PlayerAnimals] findFirstByZooId %d", zooId.getValue()));
+        return jpaPlayerAnimals.findFirstByZooId(zooId.getValue()).map(playerAnimalMapper::toModel);
     }
 
     @Override

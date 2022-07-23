@@ -1,6 +1,7 @@
 package com.example.jeezoo.animal.application;
 
 import com.example.jeezoo.animal.domain.*;
+import com.example.jeezoo.animal.domain.exception.AnimalNotFoundException;
 import com.example.jeezoo.animal.infrastructure.primary.request.ExternalAnimalRequest;
 import com.example.jeezoo.kernel.annotations.Service;
 import com.example.jeezoo.space.domain.SpaceId;
@@ -19,12 +20,20 @@ public final class DefaultAnimalService implements AnimalService {
     }
 
     @Override
+    public Animal getById(Long animalId) {
+        return animals
+            .findById(AnimalId.of(animalId))
+            .orElseThrow(() -> new AnimalNotFoundException(AnimalId.of(animalId)));
+    }
+
+    @Override
     public AnimalId addAnimal(
         String name, String type, String status, float lengthMax, float weightMax, String imageLink, Long spaceId
     ) {
         final AnimalId animalId = AnimalId.noId();
 //    final Animal animal = Animal.of(animalId, name, type, status, LocalDate.now(), spaceId);
-        final Animal animal = Animal.createAnimal(name,
+        final Animal animal = Animal.createAnimal(
+            name,
             type,
             AnimalStatus.valueOf(status),
             lengthMax,
@@ -47,7 +56,8 @@ public final class DefaultAnimalService implements AnimalService {
         String imageLink,
         Long spaceId
     ) {
-        final Animal animal = Animal.of(AnimalId.of(id),
+        final Animal animal = Animal.of(
+            AnimalId.of(id),
             name,
             type,
             AnimalStatus.valueOf(status),

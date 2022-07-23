@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface AnimalService {
 
+  Animal getById(Long animalId);
   AnimalId addAnimal(String name, String type, String status, float lengthMax, float weightMax, String imageLink, Long spaceId);
 
   Void update(Long id, String name, String type, String status, float lengthMax, float weightMax, String imageLink, Long spaceId);

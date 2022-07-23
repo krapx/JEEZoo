@@ -42,14 +42,14 @@ public class PlayerAnimalController {
         return ResponseEntity.ok(PlayerAnimalResponse.fromPlayerAnimal(playerAnimal));
     }
 
-    @GetMapping("playerId")
-    public ResponseEntity<PlayerAnimalResponse> getByPlayerId(Authentication authentication) {
-        Claims principal = (Claims) authentication.getPrincipal();
-        PlayerId playerId = PlayerId.of(Long.parseLong(principal.get("player_id").toString()));
-
-        PlayerAnimal playerAnimal = playerAnimalService.findByPlayerId(playerId);
-        return ResponseEntity.ok(PlayerAnimalResponse.fromPlayerAnimal(playerAnimal));
-    }
+//    @GetMapping("playerId")
+//    public ResponseEntity<PlayerAnimalResponse> getByPlayerId(Authentication authentication) {
+//        Claims principal = (Claims) authentication.getPrincipal();
+//        PlayerId playerId = PlayerId.of(Long.parseLong(principal.get("player_id").toString()));
+//
+//        PlayerAnimal playerAnimal = playerAnimalService.findFirstByZooId(playerId);
+//        return ResponseEntity.ok(PlayerAnimalResponse.fromPlayerAnimal(playerAnimal));
+//    }
 
     @GetMapping("zooId/{zooId}")
     public List<PlayerAnimalResponse> getAllByZooId(@PathVariable Long zooId) {
@@ -75,7 +75,7 @@ public class PlayerAnimalController {
 
     @PutMapping
     public ResponseEntity<?> update(@Valid @RequestBody UpdatePlayerAnimalRequest request) {
-        PlayerAnimal existing = playerAnimalService.findByPlayerId(PlayerId.of(request.playerId()));
+        PlayerAnimal existing = playerAnimalService.findById(PlayerAnimalId.of(request.id()));
 
         PlayerAnimal updated = PlayerAnimal.of(
             existing.getId(),
