@@ -15,4 +15,7 @@ public final class CreateSpaceCmd implements Command {
     public final String status;
     @NotNull
     public final Long zooId;
+    @NotEmpty
+    public final int defeatedCount;
+
 }

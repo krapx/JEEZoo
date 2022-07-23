@@ -59,16 +59,16 @@ public class ZooController {
     private final PlayerAnimals playerAnimalRepo;
 
     public ZooController(
-        CommandBus commandBus,
-        QueryBus queryBus,
-        SpaceService spaceService,
-        Spaces spaces,
-        ZooService zooService,
-        AnimalService animalService,
-        Zoos zoos,
-        PlayerAnimalService playerAnimalService,
-        Animals animals,
-        PlayerAnimals playerAnimalRepo
+            CommandBus commandBus,
+            QueryBus queryBus,
+            SpaceService spaceService,
+            Spaces spaces,
+            ZooService zooService,
+            AnimalService animalService,
+            Zoos zoos,
+            PlayerAnimalService playerAnimalService,
+            Animals animals,
+            PlayerAnimals playerAnimalRepo
     ) {
         this.commandBus = commandBus;
         this.queryBus = queryBus;
@@ -85,22 +85,22 @@ public class ZooController {
     @PostMapping("")
     public ResponseEntity<Void> addZoo(@RequestBody @Valid AddZooRequest addZooRequest) {
         var addZooCommand = new AddZooCommand(
-            addZooRequest.name(),
-            addZooRequest.zooStatus(),
-            addZooRequest.playerId()
+                addZooRequest.name(),
+                addZooRequest.zooStatus(),
+                addZooRequest.playerId()
         );
 
         final ZooId zooId = commandBus.send(addZooCommand);
 
         return ResponseEntity
-            .created(linkTo(methodOn(ZooController.class).getZooById(zooId.getValue())).toUri())
-            .build();
+                .created(linkTo(methodOn(ZooController.class).getZooById(zooId.getValue())).toUri())
+                .build();
     }
 
     @PostMapping("generate")
     public ResponseEntity<Long> generateZooGame(
-        @RequestBody @Valid GenerateZooGameRequest generateZooGame,
-        Authentication authentication
+            @RequestBody @Valid GenerateZooGameRequest generateZooGame,
+            Authentication authentication
     ) {
         Claims principal = (Claims) authentication.getPrincipal();
         PlayerId playerId = PlayerId.of(Long.parseLong(principal.get("player_id").toString()));
@@ -108,41 +108,41 @@ public class ZooController {
         // 1 CREATE ZOO
         ZooId zooId = zooService.addZoo("zoo_1", ZooStatus.IN_PROGRESS, playerId);
         playerAnimalService.create(
-            PlayerAnimal.create(
-                generateZooGame.playerAnimal().name(),
-                generateZooGame.playerAnimal().image(),
-                playerId,
-                zooId
-            )
+                PlayerAnimal.create(
+                        generateZooGame.playerAnimal().name(),
+                        generateZooGame.playerAnimal().image(),
+                        playerId,
+                        zooId
+                )
         );
 
         generateZooGame.spaces().forEach((space) -> {
 
             // 2 CREATE SPACES
             SpaceId spaceId = spaceService.save(Space.createSpace(
-                space.name(),
-                space.status(),
-                zooId
+                    space.name(),
+                    space.status(),
+                    zooId
             ));
 
             // 3 CREATE ANIMALS
             String url = "https://zoo-animal-api.herokuapp.com/animals/rand/" + space.animalsNumber();
             RestTemplate restTemplate = new RestTemplate();
             Optional
-                .of(restTemplate.getForObject(url, ExternalAnimalRequest[].class))
-                .ifPresentOrElse(externalAnimalRequests -> {
-                    Arrays.stream(externalAnimalRequests).forEach(externalAnimalRequest -> {
-                        animalService.addAnimal(
-                            externalAnimalRequest.name,
-                            externalAnimalRequest.animal_type,
-                            AnimalStatus.Alive.name(),
-                            externalAnimalRequest.length_max,
-                            externalAnimalRequest.weight_max,
-                            externalAnimalRequest.image_link,
-                            spaceId.getValue()
-                        );
-                    });
-                }, () -> new BadRequestException(""));
+                    .of(restTemplate.getForObject(url, ExternalAnimalRequest[].class))
+                    .ifPresentOrElse(externalAnimalRequests -> {
+                        Arrays.stream(externalAnimalRequests).forEach(externalAnimalRequest -> {
+                            animalService.addAnimal(
+                                    externalAnimalRequest.name,
+                                    externalAnimalRequest.animal_type,
+                                    AnimalStatus.Alive.name(),
+                                    externalAnimalRequest.length_max,
+                                    externalAnimalRequest.weight_max,
+                                    externalAnimalRequest.image_link,
+                                    spaceId.getValue()
+                            );
+                        });
+                    }, () -> new BadRequestException(""));
         });
 
         return ResponseEntity.ok(zooId.getValue());
@@ -175,10 +175,10 @@ public class ZooController {
             List<SpaceId> spaceIds = spaces.findAllByZooId(zoo.getId()).stream().map(Space::getId).toList();
             Long killNumber = animalService.killNumber(spaceIds);
             return ZooDetailsResponse.fromZoo(
-                zoo,
-                killNumber,
-                completedSpaceNumber,
-                PlayerAnimalResponse.fromPlayerAnimal(playerAnimal)
+                    zoo,
+                    killNumber,
+                    completedSpaceNumber,
+                    PlayerAnimalResponse.fromPlayerAnimal(playerAnimal)
             );
         }).toList();
     }
@@ -194,8 +194,8 @@ public class ZooController {
         Zoo zoo = queryBus.send(new RetrieveZooById(zooId));
 
         List<PlayerAnimal> playerAnimalsOfZoo = playerAnimalRepo.findAllByPlayerIdAndZooId(
-            zoo.getPlayerId(),
-            zoo.getId()
+                zoo.getPlayerId(),
+                zoo.getId()
         );
         List<Space> zooSpaces = spaces.findAllByZooId(zoo.getId());
         List<SpaceId> zooSpaceIds = zooSpaces.stream().map(Space::getId).toList();
@@ -203,24 +203,24 @@ public class ZooController {
         Long zooKillNumber = animalService.killNumber(zooSpaceIds);
 
         return ResponseEntity.ok(ZooGameDetailsResponse.from(
-            zoo,
-            zooKillNumber,
-            playerAnimalsOfZoo.stream().map(PlayerAnimalResponse::fromPlayerAnimal).toList(),
-            zooAnimalsHistory.stream().map(AnimalResponse::fromAnimal).toList(),
-            zooSpaces.stream().map(SpaceResponse::fromSpace).toList()
+                zoo,
+                zooKillNumber,
+                playerAnimalsOfZoo.stream().map(PlayerAnimalResponse::fromPlayerAnimal).toList(),
+                zooAnimalsHistory.stream().map(AnimalResponse::fromAnimal).toList(),
+                zooSpaces.stream().map(SpaceResponse::fromSpace).toList()
         ));
     }
 
     @PutMapping("{zooId}")
     public ResponseEntity<?> updateZooById(
-        @RequestBody @Valid UpdateZooRequest updateZooRequest, @PathVariable Long zooId
+            @RequestBody @Valid UpdateZooRequest updateZooRequest, @PathVariable Long zooId
     ) {
         var updateZooById = new UpdateZooCommand(
-            zooId,
-            updateZooRequest.name(),
-            updateZooRequest.zooStatus(),
-            updateZooRequest.createdAt(),
-            updateZooRequest.playerId()
+                zooId,
+                updateZooRequest.name(),
+                updateZooRequest.zooStatus(),
+                updateZooRequest.createdAt(),
+                updateZooRequest.playerId()
         );
         commandBus.send(updateZooById);
         return ResponseEntity.ok().build();

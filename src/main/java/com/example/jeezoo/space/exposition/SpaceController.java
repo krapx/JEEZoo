@@ -8,6 +8,8 @@ import com.example.jeezoo.space.application.command.UpdateSpaceCmd;
 import com.example.jeezoo.space.application.query.ReadSpaceByIdQuery;
 import com.example.jeezoo.space.application.query.ReadSpaceQuery;
 import com.example.jeezoo.space.domain.Space;
+import com.example.jeezoo.space.domain.SpaceId;
+import com.example.jeezoo.space.domain.SpaceService;
 import com.example.jeezoo.space.exposition.request.CreateSpaceRequest;
 import com.example.jeezoo.space.exposition.request.UpdateSpaceRequest;
 import com.example.jeezoo.space.exposition.response.SpaceResponse;
@@ -17,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/spaces")
@@ -25,15 +26,17 @@ public class SpaceController {
 
     private final CommandBus commandBus;
     private final QueryBus queryBus;
+    private final SpaceService spaceService;
 
-    public SpaceController(CommandBus commandBus, QueryBus queryBus) {
+    public SpaceController(CommandBus commandBus, QueryBus queryBus, SpaceService spaceService) {
         this.commandBus = commandBus;
         this.queryBus = queryBus;
+        this.spaceService = spaceService;
     }
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody CreateSpaceRequest request) {
-        Long id = commandBus.send(CreateSpaceCmd.of(request.name(), request.status(), request.zooId()));
+        Long id = commandBus.send(CreateSpaceCmd.of(request.name(), request.status(), request.zooId(), 0));
         return ResponseEntity.created(URI.create(id.toString())).build();
     }
 
@@ -52,13 +55,31 @@ public class SpaceController {
     @PutMapping
     public ResponseEntity<?> update(@Valid @RequestBody UpdateSpaceRequest request) {
         commandBus.send(
-            UpdateSpaceCmd.builder()
-                .id(request.id)
-                .name(request.name)
-                .build()
+                UpdateSpaceCmd.builder()
+                        .id(request.id)
+                        .name(request.name)
+                        .status(request.status)
+                        .zooId(request.zooId)
+                        .defeatedCount(request.defeatedCount)
+                        .build()
         );
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("{id}/defeatedCounter/increment")
+    public ResponseEntity<?> incrementDefeatedCounter(@PathVariable Long id) {
+        Space currentSpace = this.spaceService.getById(SpaceId.of(id));
+        Space newSpace = Space.of(
+                currentSpace.getId(),
+                currentSpace.getName(),
+                currentSpace.getStatus(),
+                currentSpace.getZooId(),
+                currentSpace.getDefeatedCount()+1
+                );
+        spaceService.save(newSpace);
+        return ResponseEntity.noContent().build();
+    }
+
 
     @DeleteMapping("{id}")
     public ResponseEntity<?> delete(@Valid @PathVariable("id") Long id) {

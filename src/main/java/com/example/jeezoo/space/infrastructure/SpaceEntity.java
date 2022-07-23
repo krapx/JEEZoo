@@ -14,6 +14,7 @@ public class SpaceEntity {
     private String name;
     private String status;
     private Long zooId;
+    private int defeatedCount;
 
     public SpaceEntity id(Long id) {
         this.id = id;
@@ -32,6 +33,11 @@ public class SpaceEntity {
 
     public SpaceEntity zooId(Long zooId) {
         this.zooId = zooId;
+        return this;
+    }
+
+    public SpaceEntity defeatedCount(int defeatedCount) {
+        this.defeatedCount = defeatedCount;
         return this;
     }
 }

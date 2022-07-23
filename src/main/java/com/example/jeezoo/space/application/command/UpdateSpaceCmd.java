@@ -11,4 +11,5 @@ public final class UpdateSpaceCmd implements Command {
     public String name;
     public String status;
     public Long zooId;
+    public int defeatedCount;
 }

@@ -8,5 +8,6 @@ import javax.validation.constraints.NotNull;
 public record GenerateSpaceRequest(
     @NotEmpty String name,
     @NotEmpty String status,
-    @NotNull int animalsNumber
+    @NotNull int animalsNumber,
+    @NotNull int defeatedCount
 ) {}

@@ -12,13 +12,16 @@ public final class SpaceResponse {
     private String name;
     private String status;
     private Long zooId;
+    private int defeatedCount;
+
 
     public static SpaceResponse fromSpace(Space space) {
         return new SpaceResponse(
             space.getId().getValue(),
             space.getName(),
             space.getStatus().name(),
-            space.getZooId().getValue()
+            space.getZooId().getValue(),
+            space.getDefeatedCount()
         );
     }
 }
