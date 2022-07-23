@@ -116,13 +116,17 @@ public class ZooController {
             )
         );
 
-        generateZooGame.spaces().forEach(space -> {
+        generateZooGame.spaces().forEach((space) -> {
 
             // 2 CREATE SPACES
-            SpaceId spaceId = spaceService.save(Space.createSpace(space.name, SpaceStatus.LOCKED.name(), zooId));
+            SpaceId spaceId = spaceService.save(Space.createSpace(
+                space.name(),
+                space.status(),
+                zooId
+            ));
 
             // 3 CREATE ANIMALS
-            String url = "https://zoo-animal-api.herokuapp.com/animals/rand/" + space.animalsNumber;
+            String url = "https://zoo-animal-api.herokuapp.com/animals/rand/" + space.animalsNumber();
             RestTemplate restTemplate = new RestTemplate();
             Optional
                 .of(restTemplate.getForObject(url, ExternalAnimalRequest[].class))
