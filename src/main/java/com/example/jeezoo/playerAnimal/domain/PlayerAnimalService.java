@@ -5,7 +5,6 @@ import com.example.jeezoo.zoo.domain.ZooId;
 import com.example.jeezoo.zoo.domain.ZooService;
 import org.springframework.stereotype.Component;
 
-@Component
 public class PlayerAnimalService {
 
     private final PlayerAnimals playerAnimals;
@@ -26,6 +25,7 @@ public class PlayerAnimalService {
     }
 
     public PlayerAnimalId create(PlayerAnimal playerAnimal) {
+        zooService.getZooById(playerAnimal.getZooId());
         return playerAnimals.save(playerAnimal);
     }
 

@@ -10,6 +10,8 @@ import com.example.jeezoo.animal.application.query.RetrieveAnimalByIdQueryHandle
 import com.example.jeezoo.animal.domain.AnimalService;
 import com.example.jeezoo.animal.domain.Animals;
 import com.example.jeezoo.kernel.cqs.*;
+import com.example.jeezoo.playerAnimal.domain.PlayerAnimalService;
+import com.example.jeezoo.playerAnimal.domain.PlayerAnimals;
 import com.example.jeezoo.space.application.SpringSpaceService;
 import com.example.jeezoo.space.application.command.*;
 import com.example.jeezoo.space.application.query.ReadSpaceByIdQuery;
@@ -39,17 +41,18 @@ import java.util.Map;
 public class ApplicationConfiguration {
 
     private final Animals animals;
+    private final PlayerAnimals playerAnimals;
     private final Zoos zoos;
     private final JpaSpaceRepository jpaSpaceRepository;
     private final SpaceMapper spaceMapper;
 
     public ApplicationConfiguration(
-        Animals animals,
-        Zoos zoos,
-        JpaSpaceRepository jpaSpaceRepository,
-        SpaceMapper spaceMapper
-    ) {
+            Animals animals,
+            PlayerAnimals playerAnimals, Zoos zoos,
+            JpaSpaceRepository jpaSpaceRepository,
+            SpaceMapper spaceMapper) {
         this.animals = animals;
+        this.playerAnimals = playerAnimals;
         this.zoos = zoos;
         this.jpaSpaceRepository = jpaSpaceRepository;
         this.spaceMapper = spaceMapper;
@@ -63,7 +66,7 @@ public class ApplicationConfiguration {
         commandHandlerMap.put(DeleteAnimalCommand.class, new DeleteAnimalCommandHandler(animalService()));
         commandHandlerMap.put(
             UpdateAnimalCommand.class,
-            new UpdateAnimalCommandHandler(animalService(), animals, spaceService(), H2SpaceRepository())
+            new UpdateAnimalCommandHandler(animalService(), animals, spaceService(), H2SpaceRepository(), playerAnimalService())
         );
         commandHandlerMap.put(AddZooCommand.class, new AddZooCommandHandler(zooService()));
         commandHandlerMap.put(DeleteZooCommand.class, new DeleteZooCommandHandler(zooService()));
@@ -91,6 +94,11 @@ public class ApplicationConfiguration {
     @Bean
     public AnimalService animalService() {
         return new DefaultAnimalService(animals);
+    }
+
+    @Bean
+    public PlayerAnimalService playerAnimalService() {
+        return new PlayerAnimalService(playerAnimals, zooService());
     }
 
     @Bean
