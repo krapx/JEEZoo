@@ -12,4 +12,5 @@ public interface JpaAnimals extends JpaRepository<AnimalEntity, Long> {
     List<AnimalEntity> findBySpaceId(Long spaceId);
     List<AnimalEntity> findAllBySpaceIdInAndStatus(List<Long> spaceIdList, String status);
     Long countBySpaceIdInAndStatus(List<Long> spaceIdList, String status);
+    boolean existsBySpaceIdAndStatus(Long spaceId, String status);
 }

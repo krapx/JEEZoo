@@ -14,4 +14,5 @@ public interface Animals {
   void deleteById(AnimalId animalId);
   List<Animal> findBySpaceId(SpaceId spaceId);
   Long countBySpaceIdInAndStatus(List<SpaceId> spaceIdList, AnimalStatus status);
+  boolean existsBySpaceIdAndStatus(SpaceId spaceId, AnimalStatus status);
 }

@@ -48,6 +48,12 @@ public class H2Spaces implements Spaces {
     }
 
     @Override
+    public Optional<Space> findFirstByZooIdAndStatus(ZooId zooId, SpaceStatus status) {
+        return jpaSpaceRepository.findFirstByZooIdAndStatus(zooId.getValue(), status.name())
+            .map(spaceMapper::toModel);
+    }
+
+    @Override
     public SpaceId save(Space space) {
         return spaceMapper.toModel(jpaSpaceRepository.save(spaceMapper.toEntity(space))).getId();
     }

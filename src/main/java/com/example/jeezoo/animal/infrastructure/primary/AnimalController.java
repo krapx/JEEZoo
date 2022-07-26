@@ -118,7 +118,7 @@ public class AnimalController {
     }
 
     @PutMapping("{animalId}/status/{status}")
-    public ResponseEntity<?> updateAnimalById(@PathVariable Long animalId, @PathVariable String status) {
+    public ResponseEntity<?> updateAnimalStatusById(@PathVariable Long animalId, @PathVariable String status) {
         Animal animal = animalService.getById(animalId);
         var updateAnimalById = new UpdateAnimalCommand(
             animalId,

@@ -8,6 +8,6 @@ public final class PlayerAnimalDamage {
     private final Long value;
 
     public static PlayerAnimalDamage notCreateYet() {
-        return new PlayerAnimalDamage(2L);
+        return new PlayerAnimalDamage(500L);
     }
 }

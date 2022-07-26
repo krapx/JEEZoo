@@ -86,4 +86,9 @@ public class H2Animals implements Animals {
             status.name()
         );
     }
+
+    @Override
+    public boolean existsBySpaceIdAndStatus(SpaceId spaceId, AnimalStatus status) {
+        return jpaAnimals.existsBySpaceIdAndStatus(spaceId.getValue(), status.name());
+    }
 }
