@@ -21,7 +21,8 @@ public final class UpdateSpaceCmdHandler implements CommandHandler<UpdateSpaceCm
             SpaceId.of(command.id),
             command.name,
             SpaceStatus.valueOf(command.status),
-            ZooId.of(command.zooId)
+            ZooId.of(command.zooId),
+            command.defeatedCount
         ));
         return null;
     }

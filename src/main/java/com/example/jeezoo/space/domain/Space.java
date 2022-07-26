@@ -10,8 +10,10 @@ public final class Space {
     private final String name;
     private final SpaceStatus status;
     private final ZooId zooId;
+    private final int defeatedCount;
 
     public static Space createSpace(String name, String status, ZooId zooId) {
-        return new Space(SpaceId.notCreatedYet(), name, SpaceStatus.valueOf(status), zooId);
+
+        return new Space(SpaceId.notCreatedYet(), name, SpaceStatus.valueOf(status), zooId, 0);
     }
 }

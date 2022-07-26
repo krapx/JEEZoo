@@ -11,18 +11,20 @@ public final class SpaceMapper {
 
     public SpaceEntity toEntity(Space space) {
         return new SpaceEntity()
-            .id(space.getId().getValue())
-            .name(space.getName())
-            .status(space.getStatus().name())
-            .zooId(space.getZooId().getValue());
+                .id(space.getId().getValue())
+                .name(space.getName())
+                .status(space.getStatus().name())
+                .zooId(space.getZooId().getValue())
+                .defeatedCount(space.getDefeatedCount());
     }
 
     public Space toModel(SpaceEntity spaceEntity) {
         return Space.of(
-            SpaceId.of(spaceEntity.getId()),
-            spaceEntity.getName(),
-            SpaceStatus.valueOf(spaceEntity.getStatus()),
-            ZooId.of(spaceEntity.getZooId())
+                SpaceId.of(spaceEntity.getId()),
+                spaceEntity.getName(),
+                SpaceStatus.valueOf(spaceEntity.getStatus()),
+                ZooId.of(spaceEntity.getZooId()),
+                spaceEntity.getDefeatedCount()
         );
     }
 }

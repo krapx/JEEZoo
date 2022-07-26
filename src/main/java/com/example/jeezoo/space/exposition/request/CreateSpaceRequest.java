@@ -9,6 +9,8 @@ public record CreateSpaceRequest(
     @NotEmpty
     String status,
     @NotNull
-    Long zooId
+    Long zooId,
+
+    int defeatedCount
 ) {
 }
