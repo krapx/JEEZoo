@@ -63,7 +63,7 @@ public class ApplicationConfiguration {
         commandHandlerMap.put(DeleteAnimalCommand.class, new DeleteAnimalCommandHandler(animalService()));
         commandHandlerMap.put(
             UpdateAnimalCommand.class,
-            new UpdateAnimalCommandHandler(animalService(), animals, spaceService())
+            new UpdateAnimalCommandHandler(animalService(), animals, spaceService(), H2SpaceRepository())
         );
         commandHandlerMap.put(AddZooCommand.class, new AddZooCommandHandler(zooService()));
         commandHandlerMap.put(DeleteZooCommand.class, new DeleteZooCommandHandler(zooService()));

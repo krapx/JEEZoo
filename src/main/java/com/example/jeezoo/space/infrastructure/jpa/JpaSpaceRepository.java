@@ -14,4 +14,5 @@ public interface JpaSpaceRepository extends JpaRepository<SpaceEntity, Long> {
     Long countByZooIdAndStatus(Long zooId, String status);
     Long countByZooId(Long zooId);
     Optional<SpaceEntity> findFirstByZooIdAndStatus(Long zooId, String status);
+    boolean existsByZooIdAndStatus(Long zooId, String status);
 }

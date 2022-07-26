@@ -14,4 +14,5 @@ public interface Spaces {
     SpaceId delete(SpaceId id);
     Long countByZooIdAndStatus(ZooId zooId, SpaceStatus status);
     Long countByZooId(ZooId zooId);
+    boolean existsByZooIdAndStatus(ZooId zooId, SpaceStatus status);
 }

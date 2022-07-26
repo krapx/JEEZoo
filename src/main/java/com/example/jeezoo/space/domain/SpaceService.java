@@ -48,7 +48,8 @@ public class SpaceService {
             space.getId(),
             space.getName(),
             status,
-            space.getZooId()
+            space.getZooId(),
+            space.getDefeatedCount()
         );
         spaces.save(newSpace);
     }
