@@ -1,18 +1,18 @@
 package com.example.jeezoo.animal.infrastructure.primary;
 
-import com.example.jeezoo.animal.domain.AnimalStatus;
-import com.example.jeezoo.animal.domain.AnimalType;
+import com.example.jeezoo.animal.infrastructure.primary.response.AnimalResponse;
 import com.example.jeezoo.fixture.AnimalFixtures;
 import io.restassured.RestAssured;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
-import java.time.LocalDate;
-
+import static io.restassured.RestAssured.when;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
@@ -29,15 +29,25 @@ class AnimalControllerTest {
 
     @Test
     void should_add_animal() {
-        AnimalFixtures.addAnimal(
-            "animal_1",
-            AnimalType.Lion.name(),
-            AnimalStatus.Alive.name(),
-            LocalDate.now(),
-            1L
-        );
+        String location = AnimalFixtures
+            .addAnimal("name", "type", "Alive", 1L, 1L, "imageLink", 1L)
+            .then()
+            .statusCode(201)
+            .extract()
+            .header("Location");
 
-//        when().get("/api/")
+        assertThat(location).isNotEmpty();
+
+        AnimalResponse animalResponse = when()
+            .get(location)
+            .then()
+            .statusCode(200)
+            .extract()
+            .body()
+            .jsonPath()
+            .getObject(".", AnimalResponse.class);
+
+        assertThat(animalResponse.getName()).isEqualTo("name");
     }
 
     @Test

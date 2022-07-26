@@ -50,13 +50,13 @@ public class AnimalController {
     @PostMapping("")
     public ResponseEntity<Void> addAnimal(@RequestBody @Valid AddAnimalRequest addAnimalRequest) {
         var addAnimalCommand = new AddAnimalCommand(
-            addAnimalRequest.name,
-            addAnimalRequest.type,
-            addAnimalRequest.status,
-            addAnimalRequest.lengthMax,
-            addAnimalRequest.weightMax,
-            addAnimalRequest.imageLink,
-            addAnimalRequest.spaceId
+            addAnimalRequest.name(),
+            addAnimalRequest.type(),
+            addAnimalRequest.status(),
+            addAnimalRequest.lengthMax(),
+            addAnimalRequest.weightMax(),
+            addAnimalRequest.imageLink(),
+            addAnimalRequest.spaceId()
         );
 
         final AnimalId animalId = commandBus.send(addAnimalCommand);
@@ -87,7 +87,7 @@ public class AnimalController {
     }
 
     @GetMapping("{animalId}")
-    public ResponseEntity<?> getAnimalById(@PathVariable Long animalId) {
+    public ResponseEntity<AnimalResponse> getAnimalById(@PathVariable Long animalId) {
         Animal animal = queryBus.send(new RetrieveAnimalById(animalId));
         return ResponseEntity.ok(AnimalResponse.fromAnimal(animal));
     }

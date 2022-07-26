@@ -11,14 +11,15 @@ import static io.restassured.RestAssured.given;
 public final class AnimalFixtures {
 
     public static Response addAnimal(
-        String name, String type, String status, LocalDate arrivalDate, Long spaceId
+        String name,
+        String type,
+        String status,
+        float lengthMax,
+        float weightMax,
+        String imageLink,
+        Long spaceId
     ) {
-        AddAnimalRequest request = new AddAnimalRequest();
-        request.name = name;
-        request.type = type;
-        request.status = status;
-        //request.arrivalDate = arrivalDate;
-        request.spaceId = spaceId;
+        AddAnimalRequest request = new AddAnimalRequest(name, type, status, lengthMax, weightMax, imageLink, spaceId);
         return given().contentType(ContentType.JSON).body(request).when().post("/api/animals");
     }
 }

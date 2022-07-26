@@ -58,12 +58,18 @@ public final class UpdateAnimalCommandHandler implements CommandHandler<UpdateAn
 
         if (isSpaceCompleted) {
             spaceService.saveStatus(SpaceId.of(command.getSpaceId()), SpaceStatus.COMPLETED);
-            Claims claims = (Claims) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            PlayerId playerId = PlayerId.of(Long.parseLong(claims.get("player_id").toString()));
-            PlayerAnimal playerAnimal = PlayerAnimal.create(command.getName(), command.getImageLink(),
-                                                            playerId,spaceOfAnimal.getZooId());
-            playerAnimalService.create(playerAnimal);
             if (!zooHasInProgressSpace) {
+
+                Claims claims = (Claims) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                PlayerId playerId = PlayerId.of(Long.parseLong(claims.get("player_id").toString()));
+                PlayerAnimal playerAnimal = PlayerAnimal.create(
+                    command.getName(),
+                    command.getImageLink(),
+                    playerId,
+                    spaceOfAnimal.getZooId()
+                );
+                playerAnimalService.create(playerAnimal);
+
                 Space nextSpaceToUnlock = spaceService.getNextByZooIdAndStatus(
                     spaceOfAnimal.getZooId(),
                     SpaceStatus.LOCKED

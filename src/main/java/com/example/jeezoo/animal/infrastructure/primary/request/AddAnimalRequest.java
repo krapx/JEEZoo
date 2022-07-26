@@ -1,12 +1,12 @@
 package com.example.jeezoo.animal.infrastructure.primary.request;
 
-public class AddAnimalRequest {
-
-  public String    name;
-  public String    type;
-  public String    status;
-  public float     lengthMax;
-  public float     weightMax;
-  public String    imageLink;
-  public Long      spaceId;
+public record AddAnimalRequest(
+    String name,
+    String type,
+    String status,
+    float lengthMax,
+    float weightMax,
+    String imageLink,
+    Long spaceId
+) {
 }
