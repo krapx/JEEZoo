@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface AnimalService {
 
+  List<Animal> findAll();
   Animal getById(Long animalId);
   AnimalId addAnimal(String name, String type, String status, float lengthMax, float weightMax, String imageLink, Long spaceId);
 

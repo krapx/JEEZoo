@@ -9,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public final class DefaultAnimalService implements AnimalService {
@@ -17,6 +18,11 @@ public final class DefaultAnimalService implements AnimalService {
 
     public DefaultAnimalService(Animals animals) {
         this.animals = animals;
+    }
+
+    @Override
+    public List<Animal> findAll() {
+        return animals.findAll();
     }
 
     @Override
