@@ -76,6 +76,6 @@ public class AuthController {
 
     @GetMapping("/demo")
     public String demo() {
-        return "demo";
+        return "demo2";
     }
 }
